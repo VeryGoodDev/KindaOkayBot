@@ -1,0 +1,26 @@
+{
+  "name": "kindaokaybot",
+  "version": "1.0.0",
+  "description": " \u001b Source code for my Twitch chatbot, and some static pages related to it",
+  "main": "chatbot/index.js",
+  "scripts": {
+    "test": "echo \"No tests at least for now, it's a pretty basic bot for use on one stream\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VeryGoodDev/kindaokaybot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VeryGoodDev/kindaokaybot/issues"
+  },
+  "homepage": "https://github.com/VeryGoodDev/kindaokaybot#readme",
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "tmi.js": "^1.5.0"
+  }
+}
