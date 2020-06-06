@@ -4,6 +4,7 @@
   "description": " \u001b Source code for my Twitch chatbot, and some static pages related to it",
   "main": "chatbot/index.js",
   "scripts": {
+    "start": "node chatbot/index.js",
     "test": "echo \"No tests at least for now, it's a pretty basic bot for use on one stream\""
   },
   "repository": {
