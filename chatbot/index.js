@@ -2,10 +2,6 @@ const tmi = require('tmi.js')
 const { getStreamData } = require('./twitchApi.js')
 const commands = require('./commands.js')
 
-const keepAliveInterval = setInterval(() => {
-  console.log(`Stayin' alive, stayin' alive...`)
-}, 60000)
-
 const client = new tmi.client({
   identity: {
     username: process.env.BOT_USERNAME,
