@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const tmi = require('tmi.js')
 const { getStreamData } = require('./twitchApi.js')
 const commands = require('./commands.js')
