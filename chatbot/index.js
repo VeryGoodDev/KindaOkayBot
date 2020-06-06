@@ -20,7 +20,6 @@ client.on('join', (channel, username, self) => {
   console.log(`${username} joined ${new Date().toLocaleDateString('en', { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`)
 })
 client.on('disconnected', (reason) => {
-  clearInterval(keepAliveInterval)
   console.log(`Disconnected for the following reason: ${reason}`)
 })
 client.connect()
