@@ -64,6 +64,8 @@ const commands = {
           const startTime = new Date(stream.started_at).getTime()
           if (!Number.isNaN(startTime)) {
             respond(`Dev has been live for ${getUptimeString(startTime)}`)
+          } else {
+            respond(`Somehow this command didn't work. Awkward...`)
           }
         }
       })
