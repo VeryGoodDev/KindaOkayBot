@@ -34,6 +34,13 @@ const commands = {
     },
   },
   // Dynamic simple responses
+  '!creepylurk': {
+    handler(sender, respond) {
+      respond(
+        `${sender.displayName} is lurking. Not like a normal lurk though, no no no. Instead, ${sender.displayName} is up in a tree, hiding behind the branches and leaves, and watching from the distance through binoculars while chuckling quietly at their frankly disturbing lurking behavior. Thanks for the lurk?`
+      )
+    },
+  },
   '!lurk': {
     handler(sender, respond) {
       respond(
@@ -51,6 +58,13 @@ const commands = {
   '!unlurk': {
     handler(sender, respond) {
       respond(`${sender.displayName} has come back from watching in the shadows.`)
+    },
+  },
+  '!worklurk': {
+    handler(sender, respond) {
+      respond(
+        `${sender.displayName} has to work, but was kind enough to stop by the stream and have it up in the background while they work. Hope that work goes well, and happy lurking!`
+      )
     },
   },
   // Not simple responses
