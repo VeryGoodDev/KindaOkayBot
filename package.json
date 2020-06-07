@@ -25,6 +25,17 @@
     "tmi.js": "^1.5.0"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "eslint": "^7.2.0",
+    "eslint-config-personal": "github:veryGoodDev/eslint-config-personal"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint-config-personal"
+    ],
+    "rules": {
+      "camelcase": "off",
+      "new-cap": "off"
+    }
   }
 }
