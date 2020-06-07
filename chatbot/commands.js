@@ -92,6 +92,7 @@ const aliases = {
   '!calender': `!schedule`,
   '!creeperlurk': `!creepylurk`,
   '!creeplurk': `!creepylurk`,
+  '!stillurking': `!stilllurking`,
   '!werklurk': `!worklurk`,
   '!wurklurk': `!worklurk`,
 }
