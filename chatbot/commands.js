@@ -90,6 +90,10 @@ const commands = {
 const aliases = {
   '!calendar': `!schedule`,
   '!calender': `!schedule`,
+  '!creeperlurk': `!creepylurk`,
+  '!creeplurk': `!creepylurk`,
+  '!werklurk': `!worklurk`,
+  '!wurklurk': `!worklurk`,
 }
 
 function getUptimeString(startTime) {
