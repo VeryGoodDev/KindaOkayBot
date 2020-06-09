@@ -34,8 +34,8 @@ function handleMessage(target, context, message, self) {
   // Do nothing if message is from the bot
   if (self) return
   const respond = msg => client.say(target, msg)
-  console.log({ target, context, message })
   const sender = transformUserData(context)
+  console.log({ sender, message })
   const [originalCommand, ...args] = message.trim().split(/\s+/)
   const command = originalCommand.toLowerCase()
   if (command in commands) {
