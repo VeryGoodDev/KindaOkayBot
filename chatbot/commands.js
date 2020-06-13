@@ -61,8 +61,9 @@ const commands = {
     },
   },
   '!so': {
-    handler(sender, respond, streamer) {
-      if (!streamer) return
+    handler(sender, respond, streamerParam) {
+      if (!streamerParam) return
+      const streamer = streamerParam.replace(/^@/, ``)
       respond(
         `Shout out to the ${getAdjective(
           streamer.toLowerCase()
