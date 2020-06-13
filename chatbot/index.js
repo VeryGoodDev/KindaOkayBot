@@ -2,6 +2,7 @@ require(`dotenv`).config()
 
 const tmi = require(`tmi.js`)
 const { aliases, commands } = require(`./commands.js`)
+const { firstNames, lastNames } = require(`./cumbernames.js`)
 
 const client = new tmi.client({
   identity: {
@@ -31,17 +32,22 @@ client.on(`disconnected`, reason => {
 client.connect()
 
 function handleMessage(target, context, message, self) {
-  // Do nothing if message is from the bot
-  if (self) return
+  // Do nothing if message is from the bot and isn't a command
+  if (self && !message.startsWith(`!`)) return
   const respond = msg => client.say(target, msg)
   const sender = transformUserData(context)
   console.log({ sender, message })
+  // TODO: Add any moderation
   const [originalCommand, ...args] = message.trim().split(/\s+/)
   const command = originalCommand.toLowerCase()
   if (command in commands) {
-    commands[command].handler(sender, respond, ...args)
+    if (checkPermission(sender, commands[command].hasPermission)) {
+      commands[command].handler(sender, respond, ...args)
+    }
   } else if (command in aliases) {
-    commands[aliases[command]].handler(sender, respond, ...args)
+    if (checkPermission(sender, commands[aliases[command]].hasPermission)) {
+      commands[aliases[command]].handler(sender, respond, ...args)
+    }
   } else if ([`!so`].includes(command)) {
     client.say(
       target,
@@ -49,6 +55,8 @@ function handleMessage(target, context, message, self) {
     )
   } else if ([`!quotes`, `!commands`].includes(command)) {
     client.say(target, `${command} command coming soon`)
+  } else if (hasCumberbatchMention(message)) {
+    client.say(target, `@${sender.username} did you mean ${getRandomCumberbatchName()}?`)
   }
 }
 function handleRaid(target, raider, raiderCount) {
@@ -56,9 +64,26 @@ function handleRaid(target, raider, raiderCount) {
     target,
     `${raider} is raiding with ${raiderCount} ${pluralize(raiderCount, `raider`, `raiders`)}! Welcome raiders!`
   )
+  client.say(`!so ${raider}`)
 }
 function handleConnect(address, port) {
   console.log(`${process.env.BOT_USERNAME} connected to ${address}:${port}`)
+}
+
+function checkPermission(sender, permissionChecker = () => true) {
+  return sender.username === `verygooddev` || permissionChecker(sender)
+}
+function getRandomCumberbatchName() {
+  return `${getRandomItem(firstNames)} ${getRandomItem(lastNames)}`
+}
+function getRandomItem(list) {
+  const idx = Math.floor(Math.random() * (list.length - 1))
+  return list[idx]
+}
+function hasCumberbatchMention(message) {
+  // Matches the correct spelling and a handful of typos
+  const cumberRegex = /benn?[ea]di(ck|kt|t|ct|ckt)?\s*cumm?b[ea]rba(tch|ch|th|tc)/i
+  return cumberRegex.test(message)
 }
 function transformUserData(rawData) {
   // Some of the fields provided by Twitch have kebab-cased keys

@@ -34,6 +34,18 @@ const commands = {
     },
   },
   // Dynamic simple responses
+  '!beans': {
+    handler(sender, respond, beanType = ``) {
+      if (/^bush'?s$/i.test(beanType.trim())) {
+        respond(`DEFINITELY BEANS`)
+      } else {
+        respond(`NOT EVEN BEANS`)
+      }
+    },
+    hasPermission(sender) {
+      return [`theallbean05`, `loubob05`].includes(sender.username)
+    },
+  },
   '!creepylurk': {
     handler(sender, respond) {
       respond(
@@ -45,6 +57,16 @@ const commands = {
     handler(sender, respond) {
       respond(
         `${sender.displayName} is lurking in the shadows, still watching but now doing so from a distance. Happy lurking!`
+      )
+    },
+  },
+  '!so': {
+    handler(sender, respond, streamer) {
+      if (!streamer) return
+      respond(
+        `Shout out to the ${getAdjective(
+          streamer.toLowerCase()
+        )} ${streamer}! Go show them some love at https://twitch.tv/${streamer.toLowerCase()}`
       )
     },
   },
@@ -92,11 +114,30 @@ const aliases = {
   '!calender': `!schedule`,
   '!creeperlurk': `!creepylurk`,
   '!creeplurk': `!creepylurk`,
+  '!shoutout': `!so`,
   '!stillurking': `!stilllurking`,
   '!werklurk': `!worklurk`,
   '!wurklurk': `!worklurk`,
 }
 
+// Can use this to specify a specific adjective to be used for specific streamers
+// e.g. kindaokaybot: `kinda okay`
+const specialAdjectives = {}
+function getAdjective(streamer) {
+  if (specialAdjectives[streamer]) return specialAdjectives[streamer]
+  const adjectives = [
+    `amazing`,
+    `awesome`,
+    `fantastic`,
+    `magnificent`,
+    `phenomenal`,
+    `stupendous`,
+    `talented`,
+    `wonderful`,
+  ]
+  const idx = Math.floor(Math.random() * (adjectives.length - 1))
+  return adjectives[idx]
+}
 function getUptimeString(startTime) {
   let seconds = Math.floor((Date.now() - startTime) / 1000)
   let minutes = Math.floor(seconds / 60)
