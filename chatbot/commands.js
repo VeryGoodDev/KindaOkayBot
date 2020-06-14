@@ -70,6 +70,9 @@ const commands = {
         )} ${streamer}! Go show them some love at https://twitch.tv/${streamer.toLowerCase()}`
       )
     },
+    hasPermission(sender) {
+      return sender.mod === true
+    },
   },
   '!stilllurking': {
     handler(sender, respond) {

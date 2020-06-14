@@ -48,14 +48,18 @@ function handleMessage(target, context, message, self) {
     if (checkPermission(sender, commands[aliases[command]].hasPermission)) {
       commands[aliases[command]].handler(sender, respond, ...args)
     }
-  } else if ([`!so`].includes(command)) {
+    // Coming soon for commands that need the Twitch API
+  } else if ([].includes(command)) {
     client.say(
       target,
       `${command} command coming in the future. Dev will need to actually sit down for a bit and figure out the Twitch API for this one, so it could be a few days, could be a few weeks.`
     )
   } else if ([`!quotes`, `!commands`].includes(command)) {
+    // Coming soon for commands that don't need the Twitch API
     client.say(target, `${command} command coming soon`)
-  } else if (hasCumberbatchMention(message)) {
+  }
+  // Non-command handling
+  if (hasCumberbatchMention(message)) {
     client.say(target, `@${sender.username} did you mean ${getRandomCumberbatchName()}?`)
   }
 }
