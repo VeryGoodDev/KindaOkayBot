@@ -33,7 +33,7 @@ client.connect()
 
 function handleMessage(target, context, message, self) {
   // Do nothing if message is from the bot and isn't a command
-  if (self && !message.startsWith(`!`)) return
+  if (self && !/^!.+/.test(message)) return
   const respond = msg => client.say(target, msg)
   const sender = transformUserData(context)
   console.log({ sender, message })
