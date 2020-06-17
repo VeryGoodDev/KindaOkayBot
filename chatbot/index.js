@@ -68,7 +68,7 @@ function handleRaid(target, raider, raiderCount) {
     target,
     `${raider} is raiding with ${raiderCount} ${pluralize(raiderCount, `raider`, `raiders`)}! Welcome raiders!`
   )
-  client.say(`!so ${raider}`)
+  client.say(target, `!so ${raider}`)
 }
 function handleConnect(address, port) {
   console.log(`${process.env.BOT_USERNAME} connected to ${address}:${port}`)
