@@ -53,6 +53,13 @@ const commands = {
       )
     },
   },
+  '!gamelurk': {
+    handler(sender, respond, game = `a super dope game`) {
+      respond(
+        `${sender.displayName} wants to chill in the stream, but they also want to play ${game}. Both? Yeah, both is good. Have fun with the game, and happy lurking!`
+      )
+    },
+  },
   '!lurk': {
     handler(sender, respond) {
       respond(
