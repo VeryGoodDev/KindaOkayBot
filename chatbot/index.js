@@ -14,6 +14,13 @@ const client = new tmi.client({
 client.on(`message`, handleMessage)
 client.on(`connect`, handleConnect)
 client.on(`raided`, handleRaid)
+client.on(`anongiftpaidupgrade`, handleAnonGiftPaidUpgrade)
+client.on(`cheer`, handleCheer)
+client.on(`giftpaidupgrade`, handleGiftPaidUpgrade)
+client.on(`resub`, handleResub)
+client.on(`subgift`, handleSubGift)
+client.on(`submysterygift`, handleSubMysteryGift)
+client.on(`subscription`, handleSubscription)
 // TEMPORARY, JUST WANNA SEE WHAT THIS ONE DOES
 client.on(`join`, (channel, username, self) => {
   if (self) return
@@ -69,6 +76,56 @@ function handleRaid(target, raider, raiderCount) {
     `${raider} is raiding with ${raiderCount} ${pluralize(raiderCount, `raider`, `raiders`)}! Welcome raiders!`
   )
   client.say(target, `!so ${raider}`)
+}
+function handleAnonGiftPaidUpgrade(target, username, context) {}
+// context.bits has amount
+function handleCheer(target, context) {
+  client.say(
+    target,
+    `${transformUserData(context).displayName} just cheered with ${context.bits} ${pluralize(
+      context.bits,
+      `bit`,
+      `bits`
+    )}! Thanks for the support!`
+  )
+}
+function handleGiftPaidUpgrade(target, username, sender, context) {
+  client.say(
+    target,
+    `${
+      transformUserData(context).displayName
+    } is continuing the gift sub they received from ${sender}! Thanks for the support!`
+  )
+}
+// context["msg-param-cumulative-months"]: String - Cumulative months
+// context["msg-param-should-share-streak"]: Boolean - User decided to share their sub streak
+function handleResub(target, username, streakMonths, message, context, methods) {
+  console.log({ methods })
+  const streakString = streakMonths > 1 ? `They're currently on a ${streakMonths} month streak!` : ``
+  client.say(
+    target,
+    `${transformUserData(context).displayName} has resubscribed! ${streakString} Thanks for the support!`
+  )
+}
+// context["msg-param-recipient-display-name"]: String - The display name of the recipient
+// context["msg-param-recipient-id"]: String - The ID of the recipient
+// context["msg-param-recipient-user-name"]: String - The login of the recipient
+// context["msg-param-sender-count"]: Boolean or String - Number of giftsubs the sender has sent
+function handleSubGift(target, username, streakMonths, recipient, methods, context) {}
+// context["msg-param-sender-count"]: Boolean or String - The total numbers of giftsubs username has given in channel
+function handleSubMysteryGift(target, username, giftSubsCount, methods, context) {
+  client.say(
+    target,
+    `${transformUserData(context).displayName} is gifting ${giftSubsCount} ${pluralize(
+      giftSubsCount,
+      `sub`,
+      `subs`
+    )}} to the community! Thanks for the support!`
+  )
+}
+function handleSubscription(target, username, methods, message, context) {
+  console.log({ methods, message })
+  client.say(target, `${transformUserData(context).displayName} has just subscribed! Thanks for the support!`)
 }
 function handleConnect(address, port) {
   console.log(`${process.env.BOT_USERNAME} connected to ${address}:${port}`)
