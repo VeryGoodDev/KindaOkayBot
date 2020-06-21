@@ -4,6 +4,9 @@ const tmi = require(`tmi.js`)
 const { aliases, commands } = require(`./commands.js`)
 const { firstNames, lastNames } = require(`./cumbernames.js`)
 
+// FIXME: Probably a better way to set up moderation settings?
+let deleteReptileEmotes = false
+
 const client = new tmi.client({
   identity: {
     username: process.env.BOT_USERNAME,
@@ -22,7 +25,7 @@ client.on(`subgift`, handleSubGift)
 client.on(`submysterygift`, handleSubMysteryGift)
 client.on(`subscription`, handleSubscription)
 // TEMPORARY, JUST WANNA SEE WHAT THIS ONE DOES
-client.on(`join`, (channel, username, self) => {
+client.on(`join`, (target, username, self) => {
   if (self) return
   console.log(
     `${username} joined ${new Date().toLocaleDateString(`en`, {
@@ -33,8 +36,17 @@ client.on(`join`, (channel, username, self) => {
     })}`
   )
 })
+client.on(`part`, (target, username, self) => {
+  if (self) {
+    console.log(`The bot left I guess?`)
+    return
+  }
+  if (username === `rubyredvines` && deleteReptileEmotes) {
+    client.say(target, `!rubyout`)
+  }
+})
 client.on(`disconnected`, reason => {
-  console.log(`Disconnected for the following reason: ${reason}`)
+  console.log(`Disconnected for the following reason:`, reason)
 })
 client.connect()
 
@@ -45,6 +57,33 @@ function handleMessage(target, context, message, self) {
   const sender = transformUserData(context)
   console.log({ sender, message })
   // TODO: Add any moderation
+  if (deleteReptileEmotes) {
+    // FIXME: CHALLENGE: See if there's a one-regex way to do this (e.g. lookahead/behind)
+    if ([/^KomodoHype$/, /^KomodoHype\b/, /\bKomodoHype$/, /\bKomodoHype\b/].some(regex => regex.test(message))) {
+      console.log(`ILLEGAL EMOTE`)
+      client
+        .deletemessage(target, sender.id)
+        .catch(err => {
+          console.error(`Error trying to delete illegal message:`, err)
+        })
+        .then(() => {
+          client.whisper(
+            sender.username,
+            `Please don't use KomodoHype while rubyredvines (Dev's wife) is in chat. She only stops by from time to time and that emote makes her uncomfortable, so out of respect to her it's banned in chat when she's around. Feel free to use any other emotes in chat!`
+          )
+        })
+      return
+    }
+  } else if (message.includes(`KomodoHype`)) {
+    console.log(`NOT ILLEGAL`)
+  }
+  if (sender.username === `rubyredvines`) {
+    deleteReptileEmotes = true
+    client.say(
+      target,
+      `Dev's wife has blessed the chat with her presence! PogChamp Out of respect for her preferences, please refrain from using the "KomodoHype" emote. Bonus points if you use any emotes of hedgehogs, corgis, or cats while she's here.`
+    )
+  }
   const [originalCommand, ...args] = message.trim().split(/\s+/)
   const command = originalCommand.toLowerCase()
   if (command in commands) {
@@ -64,6 +103,10 @@ function handleMessage(target, context, message, self) {
   } else if ([`!quotes`, `!commands`].includes(command)) {
     // Coming soon for commands that don't need the Twitch API
     client.say(target, `${command} command coming soon`)
+  } else if (command.toLowerCase() === `!rubyout` && (sender.username === `verygooddev` || sender.mod === true)) {
+    // FIXME: Better shared state to change moderation settings with a command
+    deleteReptileEmotes = false
+    client.say(target, `Ruby is out of chat. You may use the "KomodoHype" emote if you really must.`)
   }
   // Non-command handling
   if (hasCumberbatchMention(message)) {
