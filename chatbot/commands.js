@@ -54,7 +54,8 @@ const commands = {
     },
   },
   '!gamelurk': {
-    handler(sender, respond, game = `a super dope game`) {
+    handler(sender, respond, ...args) {
+      const game = args.length ? args.join(` `) : `a super dope game`
       respond(
         `${sender.displayName} wants to chill in the stream, but they also want to play ${game}. Both? Yeah, both is good. Have fun with the game, and happy lurking!`
       )
@@ -64,6 +65,13 @@ const commands = {
     handler(sender, respond) {
       respond(
         `${sender.displayName} is lurking in the shadows, still watching but now doing so from a distance. Happy lurking!`
+      )
+    },
+  },
+  '!sleepylurk': {
+    handler(sender, respond) {
+      respond(
+        `As ${sender}'s laying down to sleep / Within the stream they stay to creep. Have a good sleep HahaSleep thanks for the lurk!`
       )
     },
   },
@@ -126,6 +134,7 @@ const aliases = {
   '!creeperlurk': `!creepylurk`,
   '!creeplurk': `!creepylurk`,
   '!shoutout': `!so`,
+  '!sleeplurk': `!sleepylurk`,
   '!stillurking': `!stilllurking`,
   '!werklurk': `!worklurk`,
   '!wurklurk': `!worklurk`,
