@@ -77,7 +77,7 @@ function handleMessage(target, context, message, self) {
   } else if (message.includes(`KomodoHype`)) {
     console.log(`NOT ILLEGAL`)
   }
-  if (sender.username === `rubyredvines`) {
+  if (sender.username === `rubyredvines` && !deleteReptileEmotes) {
     deleteReptileEmotes = true
     client.say(
       target,
@@ -100,7 +100,7 @@ function handleMessage(target, context, message, self) {
       target,
       `${command} command coming in the future. Dev will need to actually sit down for a bit and figure out the Twitch API for this one, so it could be a few days, could be a few weeks.`
     )
-  } else if ([`!quotes`, `!commands`].includes(command)) {
+  } else if ([`!quotes`, `!commands`].includes(command) && !self) {
     // Coming soon for commands that don't need the Twitch API
     client.say(target, `${command} command coming soon`)
   } else if (command.toLowerCase() === `!rubyout` && (sender.username === `verygooddev` || sender.mod === true)) {
