@@ -163,7 +163,7 @@ function handleSubMysteryGift(target, username, giftSubsCount, methods, context)
       giftSubsCount,
       `sub`,
       `subs`
-    )}} to the community! Thanks for the support!`
+    )} to the community! Thanks for the support!`
   )
 }
 function handleSubscription(target, username, methods, message, context) {
@@ -216,5 +216,5 @@ function transformUserData(rawData) {
   }
 }
 function pluralize(count, singular, plural) {
-  return count === 1 ? singular : plural
+  return Number(count) === 1 ? singular : plural
 }
