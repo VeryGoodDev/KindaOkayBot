@@ -37,13 +37,7 @@ client.on(`join`, (target, username, self) => {
   )
 })
 client.on(`part`, (target, username, self) => {
-  if (self) {
-    console.log(`The bot left I guess?`)
-    return
-  }
-  if (username === `rubyredvines` && deleteReptileEmotes) {
-    client.say(target, `!rubyout`)
-  }
+  if (self) console.log(`The bot left I guess?`)
 })
 client.on(`disconnected`, reason => {
   console.log(`Disconnected for the following reason:`, reason)
@@ -69,13 +63,11 @@ function handleMessage(target, context, message, self) {
         .then(() => {
           client.whisper(
             sender.username,
-            `Please don't use KomodoHype while rubyredvines (Dev's wife) is in chat. She only stops by from time to time and that emote makes her uncomfortable, so out of respect to her it's banned in chat when she's around. Feel free to use any other emotes in chat!`
+            `Please don't use KomodoHype while rubyredvines (Dev's wife) is in chat. That emote makes her uncomfortable, so out of respect to her it's banned in chat when she's around. Feel free to use any other emotes!`
           )
         })
       return
     }
-  } else if (message.includes(`KomodoHype`)) {
-    console.log(`NOT ILLEGAL`)
   }
   if (sender.username === `rubyredvines` && !deleteReptileEmotes) {
     deleteReptileEmotes = true
@@ -103,10 +95,6 @@ function handleMessage(target, context, message, self) {
   } else if ([`!quotes`, `!commands`].includes(command) && !self) {
     // Coming soon for commands that don't need the Twitch API
     client.say(target, `${command} command coming soon`)
-  } else if (command.toLowerCase() === `!rubyout` && (sender.username === `verygooddev` || sender.mod === true)) {
-    // FIXME: Better shared state to change moderation settings with a command
-    deleteReptileEmotes = false
-    client.say(target, `Ruby is out of chat. You may use the "KomodoHype" emote if you really must.`)
   }
   // Non-command handling
   if (hasCumberbatchMention(message)) {
@@ -147,7 +135,10 @@ function handleResub(target, username, streakMonths, message, context, methods) 
   const streakString = streakMonths > 1 ? `They're currently on a ${streakMonths} month streak!` : ``
   client.say(
     target,
-    `${transformUserData(context).displayName} has resubscribed! ${streakString} Thanks for the support!`
+    `${transformUserData(context).displayName} has resubscribed! ${streakString} Thanks for the support!`.replace(
+      /\s{2,}/g,
+      ` `
+    )
   )
 }
 // context["msg-param-recipient-display-name"]: String - The display name of the recipient
