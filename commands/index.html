@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../favicon.png"/>
+  <title>KindaOkayBot Commands | VeryGoodDev</title>
+  <style>
+    body {
+      margin: 0 auto;
+      max-width: 700px;
+      padding: 0 0 1em;
+    }
+    table {
+      border: 2px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 0.5em;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>KindaOkayBot Commands</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Command</th>
+        <th>Description</th>
+        <th>Permission Level</th>
+        <th>Aliases</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Filled in by JavaScript from below -->
+    </tbody>
+  </table>
+<script>
+  // SUPER HACKS -- Just for now to be able to easily bring in the commands
+  // Will eventually be served from an endpoint when I set up a proper site
+  window.module = {}
+  window.require = () => ({})
+</script>
+<script src="../chatbot/commands.js"></script>
+<script>
+;(() => {
+  const tableBody = document.querySelector(`tbody`)
+  tableBody.innerHTML = ``
+  for (const [command, data] of Object.entries(module.exports.commands)) {
+    const row = document.createElement(`tr`)
+    const commandTd = document.createElement(`td`)
+    commandTd.textContent = command
+    const descriptionTd = document.createElement(`td`)
+    descriptionTd.innerHTML = data.description || `Please let Dev know that this description is missing!`
+    descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/`(.+)`/g, `<code>$1</code>`)
+    const permissionLevelTd = document.createElement(`td`)
+    permissionLevelTd.textContent = data.permissionLevel || `anyone`
+    const aliasTd = document.createElement(`td`)
+    const aliases = Object.entries(module.exports.aliases)
+      .filter(aliasData => aliasData[1] === command)
+      .map(([alias]) => alias)
+    if (aliases.length) {
+      const list = document.createElement(`ul`)
+      for (const alias of aliases) {
+        const item = document.createElement(`li`)
+        item.textContent = alias
+        list.appendChild(item)
+      }
+      aliasTd.appendChild(list)
+    }
+    row.appendChild(commandTd)
+    row.appendChild(descriptionTd)
+    row.appendChild(permissionLevelTd)
+    row.appendChild(aliasTd)
+    tableBody.appendChild(row)
+  }
+})()
+</script>
+</body>
+</html>
