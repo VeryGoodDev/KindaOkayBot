@@ -48,7 +48,7 @@
 ;(() => {
   const tableBody = document.querySelector(`tbody`)
   tableBody.innerHTML = ``
-  for (const [command, data] of Object.entries(module.exports.commands)) {
+  for (const [command, data] of Object.entries(module.exports.commands).filter(commandData => !commandData[1].exclusive) {
     const row = document.createElement(`tr`)
     const commandTd = document.createElement(`td`)
     commandTd.textContent = command
