@@ -35,7 +35,8 @@
     ],
     "rules": {
       "camelcase": "off",
-      "new-cap": "off"
+      "new-cap": "off",
+      "no-restricted-syntax": "off"
     }
   }
 }
