@@ -92,7 +92,7 @@ function handleMessage(target, context, message, self) {
       target,
       `${command} command coming in the future. Dev will need to actually sit down for a bit and figure out the Twitch API for this one, so it could be a few days, could be a few weeks.`
     )
-  } else if ([`!quotes`, `!commands`].includes(command) && !self) {
+  } else if ([`!quotes`].includes(command) && !self) {
     // Coming soon for commands that don't need the Twitch API
     client.say(target, `${command} command coming soon`)
   }

@@ -10,6 +10,12 @@ const commands = {
     },
     description: `Use to get a little bit of info about KindaOkayBot`,
   },
+  '!commands': {
+    handler(sender, respond) {
+      respond(`Go to https://verygooddev.github.io/kindaokaybot/commands to get a full list of commands you can use`)
+    },
+    description: `Use to get a link to a page listing all the commands for KindaOkayBot`,
+  },
   '!hydrate': {
     handler(sender, respond) {
       respond(`Pssst. Hey you. Drinking water is cool, you should do that.`)
