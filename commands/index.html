@@ -11,34 +11,86 @@
       font-family: Montserrat, sans-serif;
       margin: 0 auto;
       max-width: 700px;
-      padding: 0 0 1em;
+      width: 100vw;
+    }
+    body, table {
+      box-sizing: border-box;
+    }
+    body.dark-mode {
+      background-color: #000;
     }
     table {
       border: 2px solid black;
       border-collapse: collapse;
+      table-layout: fixed;
+      width: 100%;
     }
     th, td {
-      border: 1px solid black;
-      padding: 0.5em;
+      /* border: 1px solid black; */
+      padding: 0.5em 0.75em;
       text-align: left;
+    }
+    thead {
+      background-color: #07247f;
+      color: #fff;
+      position: sticky;
+      top: 0;
+    }
+    tbody tr:nth-child(odd) {
+      background-color: #16db93;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #7df2c7;
     }
     td ul {
       list-style: none;
       padding-left: 0;
     }
+    td ul li {
+      padding: 0.25em 0;
+    }
     h1 {
       font-family: Righteous, serif;
       text-transform: uppercase;
+      text-shadow: 0px 0px 5px #dafbef;
     }
     code, pre {
       font-family: 'Source Code Pro', monospace;
     }
-    caption {
-      text-align: left;
+    @media screen and (max-width: 749px) {
+      tr *:last-child {
+        display: none;
+      }
+      thead th:first-child {
+        min-width: 100px;
+        width: 15vw;
+      }
+      tr.mod-command td:nth-child(2)::before {
+        color: #8c035e;
+        content: 'Mod only!';
+        display: block;
+        font-size: 0.77em;
+        font-style: italic;
+        font-weight: bold;
+        margin-bottom: 0.25em;
+        text-transform: uppercase;
+      }
+    }
+    @media screen and (min-width: 750px) {
+      body {
+        padding-bottom: 1em;
+      }
+      /* All but the second column should be restricted to 15% width */
+      thead th:not(:nth-child(2)) {
+        width: 15%;
+      }
+      caption {
+        text-align: left;
+      }
     }
   </style>
 </head>
-<body>
+<body class="dark-mode">
   <table>
     <caption>
       <h1>KindaOkayBot Commands</h1>
@@ -48,7 +100,7 @@
         <th scope="col">Command</th>
         <th scope="col">Description</th>
         <th scope="col">Permission Level</th>
-        <th scope="col">Aliases</th>
+        <!-- <th scope="col">Aliases</th> -->
       </tr>
     </thead>
     <tbody>
@@ -66,9 +118,24 @@
 ;(() => {
   const tableBody = document.querySelector(`tbody`)
   tableBody.innerHTML = ``
-  for (const [command, data] of Object.entries(module.exports.commands).filter(
-    commandData => !commandData[1].exclusive
-  )) {
+  for (const [command, data] of [
+    ...Object.entries(module.exports.commands).filter(commandData => !commandData[1].exclusive),
+    ...Object.entries(module.exports.aliases)
+      .filter(aliasData => !module.exports.commands[aliasData[1]].exclusive)
+      .map(([alias, realCommand]) => [
+        alias,
+        {
+          description: `Alias for ${realCommand}`,
+          permissionLevel: module.exports.commands[realCommand].permissionLevel,
+        },
+      ]),
+  ].sort((a, b) => {
+    const [aCommand] = a
+    const [bCommand] = b
+    if (aCommand < bCommand) return -1
+    if (aCommand > bCommand) return 1
+    return 0
+  })) {
     const row = document.createElement(`tr`)
     const commandTd = document.createElement(`td`)
     commandTd.textContent = command
@@ -77,23 +144,26 @@
     descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/`(.+)`/g, `<code>$1</code>`)
     const permissionLevelTd = document.createElement(`td`)
     permissionLevelTd.textContent = data.permissionLevel || `anyone`
-    const aliasTd = document.createElement(`td`)
-    const aliases = Object.entries(module.exports.aliases)
-      .filter(aliasData => aliasData[1] === command)
-      .map(([alias]) => alias)
-    if (aliases.length) {
-      const list = document.createElement(`ul`)
-      for (const alias of aliases) {
-        const item = document.createElement(`li`)
-        item.textContent = alias
-        list.appendChild(item)
-      }
-      aliasTd.appendChild(list)
+    if (data.permissionLevel === `mods`) {
+      row.classList.add(`mod-command`)
     }
+    // const aliasTd = document.createElement(`td`)
+    // const aliases = Object.entries(module.exports.aliases)
+    //   .filter(aliasData => aliasData[1] === command)
+    //   .map(([alias]) => alias)
+    // if (aliases.length) {
+    //   const list = document.createElement(`ul`)
+    //   for (const alias of aliases) {
+    //     const item = document.createElement(`li`)
+    //     item.textContent = alias
+    //     list.appendChild(item)
+    //   }
+    //   aliasTd.appendChild(list)
+    // }
     row.appendChild(commandTd)
     row.appendChild(descriptionTd)
     row.appendChild(permissionLevelTd)
-    row.appendChild(aliasTd)
+    // row.appendChild(aliasTd)
     tableBody.appendChild(row)
   }
 })()
