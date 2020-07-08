@@ -188,7 +188,6 @@
 })()
 window.addEventListener(`hashchange`, () => {
   const target = document.querySelector(`[id="${window.location.hash.replace(`#`, ``)}"]`)
-  console.log(target.offsetTop)
   window.scrollTo(0, target.offsetTop)
   target.classList.add(`highlight`)
   setTimeout(() => {
