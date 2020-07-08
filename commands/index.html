@@ -35,6 +35,7 @@
       color: #fff;
       position: sticky;
       top: 0;
+      z-index: 1;
     }
     tbody tr:nth-child(odd) {
       background-color: #16db93;
@@ -57,8 +58,11 @@
     code, pre {
       font-family: 'Source Code Pro', monospace;
     }
+    .highlight {
+      animation: 800ms linear 2 highlight;
+    }
     @media screen and (max-width: 749px) {
-      tr *:last-child {
+      tr > *:last-child {
         display: none;
       }
       thead th:first-child {
@@ -86,6 +90,17 @@
       }
       caption {
         text-align: left;
+      }
+    }
+    @keyframes highlight {
+      0% {
+        filter: brightness(1);
+      }
+      50% {
+        filter: brightness(0.75);
+      }
+      100% {
+        filter: brightness(1);
       }
     }
   </style>
@@ -137,10 +152,14 @@
     return 0
   })) {
     const row = document.createElement(`tr`)
+    row.id = command
     const commandTd = document.createElement(`td`)
     commandTd.textContent = command
     const descriptionTd = document.createElement(`td`)
     descriptionTd.innerHTML = data.description || `Please let Dev know that this description is missing!`
+    if (/^alias for !.+$/i.test(descriptionTd.innerHTML)) {
+      descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/(!.+)/g, `<a href="#$1">$1</a>`)
+    }
     descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/`(.+)`/g, `<code>$1</code>`)
     const permissionLevelTd = document.createElement(`td`)
     permissionLevelTd.textContent = data.permissionLevel || `anyone`
@@ -167,6 +186,15 @@
     tableBody.appendChild(row)
   }
 })()
+window.addEventListener(`hashchange`, () => {
+  const target = document.querySelector(`[id="${window.location.hash.replace(`#`, ``)}"]`)
+  console.log(target.offsetTop)
+  window.scrollTo(0, target.offsetTop)
+  target.classList.add(`highlight`)
+  setTimeout(() => {
+    target.classList.remove(`highlight`)
+  }, 2000)
+})
 </script>
 </body>
 </html>
