@@ -61,6 +61,13 @@
     .highlight {
       animation: 800ms linear 2 highlight;
     }
+    footer {
+      color: #fff;
+      padding: 1em 0;
+    }
+    footer.dark-mode {
+      color: #000;
+    }
     @media screen and (max-width: 749px) {
       tr > *:last-child {
         display: none;
@@ -81,6 +88,9 @@
       }
       caption {
         padding: 0 1em;
+      }
+      footer {
+        text-align: center;
       }
     }
     @media screen and (min-width: 750px) {
@@ -125,6 +135,12 @@
       <!-- Filled in by JavaScript from below -->
     </tbody>
   </table>
+  <footer>
+    <small class="copyright"></small>
+  </footer>
+<script>
+  document.querySelector(`.copyright`).innerHTML = `&copy; ${new Date().getFullYear()} VeryGoodDev`
+</script>
 <script>
   // SUPER HACKS -- Just for now to be able to easily bring in the commands
   // Will eventually be served from an endpoint when I set up a proper site
