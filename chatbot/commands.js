@@ -88,7 +88,7 @@ const commands = {
   '!sleepylurk': {
     handler(sender, respond) {
       respond(
-        `As ${sender}'s laying down to sleep / Within the stream they stay to creep. Have a good sleep HahaSleep thanks for the lurk!`
+        `As ${sender.displayName}'s laying down to sleep / Within the stream they stay to creep. Have a good sleep HahaSleep thanks for the lurk!`
       )
     },
     description: `Use to declare your intent to go to bed, but still leave the stream up as a lurker`,
