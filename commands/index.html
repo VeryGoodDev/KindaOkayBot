@@ -179,7 +179,9 @@
     if (/^alias for !.+$/i.test(descriptionTd.innerHTML)) {
       descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/(!.+)/g, `<a href="#$1">$1</a>`)
     }
-    descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/`(.+)`/g, `<code>$1</code>`)
+    // .+? matches any character from one to unlimited times as few times as possible
+    // Necessary to avoid capturing too much if multiple substrings are inside backticks
+    descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/`(.+?)`/g, `<code>$1</code>`)
     const permissionLevelTd = document.createElement(`td`)
     permissionLevelTd.textContent =
       Array.isArray(data.permissionLevel) && data.permissionLevel.length ? data.permissionLevel.join(`, `) : `anyone`
