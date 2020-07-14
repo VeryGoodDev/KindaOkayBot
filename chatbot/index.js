@@ -1,4 +1,15 @@
 require(`dotenv`).config()
+const mongoose = require(`mongoose`)
+
+// Create database connection
+mongoose.connect(process.env.DATABASE_CONNECTION)
+mongoose.Promise = global.Promise
+mongoose.connection.on(`error`, err => {
+  console.error(`ERROR CONNECTING TO MONGOOSE: ${err.message}`)
+})
+// Just importing the models on startup will make it so mongoose
+// can use them wherever else it's pulled in
+require(`../models/Quote`)
 
 const tmi = require(`tmi.js`)
 const { aliases, commands } = require(`./commands.js`)

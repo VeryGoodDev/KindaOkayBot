@@ -140,6 +140,27 @@ const commands = {
     description: `Use to declare your intent to lurk in the stream while you're working (Dev does this often while doing his full time job and appreciates anyone who is able to lurk while working)`,
   },
   // Not simple responses
+  '!addquote': {
+    handler(sender, respond, ...args) {},
+    description: `Use to add a quotation of Dev saying something funny/stupid/way out there/extra derpy`,
+    permissionLevel: [`mods`, `vips`],
+    hasPermission(sender) {
+      // FIXME: Need to figure out how to test if sender is VIP
+      return sender.mod === true || sender.vip === true
+    },
+  },
+  '!deletequote': {
+    handler(sender, respond, ...args) {},
+    description: `Use to delete a previously created quote. Must provide the quote's ID (will be a number)`,
+    permissionLevel: [`mods`],
+    hasPermission(sender) {
+      return sender.mod === true
+    },
+  },
+  '!quote': {
+    handler(sender, respond, ...args) {},
+    description: `Use to get a quote from the collection of Dev quotes. Use \`!quote\` to get a random quote, \`!quote NUMBER\` to get a specific quote by number (e.g. \`!quote 69\`), or \`!quote ONE OR MORE WORDS\` to find the quote that most closely matches the word(s) you put (e.g. \`!quote canned tuna\`)`,
+  },
   '!uptime': {
     handler(sender, respond) {
       getStreamData().then(({ data = [] }) => {
