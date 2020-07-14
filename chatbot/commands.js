@@ -10,6 +10,14 @@ const commands = {
     },
     description: `Use to get a little bit of info about KindaOkayBot`,
   },
+  '!bytes': {
+    handler(sender, respond) {
+      respond(
+        `Dev finally did something with channel points! They're called bytes here. Only a few custom ones have been added so far, so if you have a cool idea, suggest it in chat!`
+      )
+    },
+    description: `Use to get some info about Dev's channel points`,
+  },
   '!commands': {
     handler(sender, respond) {
       respond(`Go to https://verygooddev.github.io/kindaokaybot/commands to get a full list of commands you can use`)
@@ -155,8 +163,10 @@ const commands = {
 const aliases = {
   '!calendar': `!schedule`,
   '!calender': `!schedule`,
+  '!channelpoints': `!bytes`,
   '!creeperlurk': `!creepylurk`,
   '!creeplurk': `!creepylurk`,
+  '!points': `!bytes`,
   '!shoutout': `!so`,
   '!sleeplurk': `!sleepylurk`,
   '!stillurking': `!stilllurking`,
