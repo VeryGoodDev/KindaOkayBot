@@ -8,8 +8,16 @@ const quoteSchema = new mongoose.Schema({
     trim: true,
     required: `You can't add a quote without the text of the quote!`,
   },
-  createdByUsername: String,
-  createdByUserId: String,
+  createdByUsername: {
+    type: String,
+    trim: true,
+    required: `Somehow user info wasn't provided for the viewer who created the quote???`,
+  },
+  createdByUserId: {
+    type: String,
+    trim: true,
+    required: `Somehow user info wasn't provided for the viewer who created the quote???`,
+  },
 })
 
 // quoteSchema.pre(`save`, function presave(next) {
