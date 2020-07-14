@@ -181,7 +181,8 @@
     }
     descriptionTd.innerHTML = descriptionTd.innerHTML.replace(/`(.+)`/g, `<code>$1</code>`)
     const permissionLevelTd = document.createElement(`td`)
-    permissionLevelTd.textContent = data.permissionLevel || `anyone`
+    permissionLevelTd.textContent =
+      Array.isArray(data.permissionLevel) && data.permissionLevel.length ? data.permissionLevel.join(`, `) : `anyone`
     if (data.permissionLevel === `mods`) {
       row.classList.add(`mod-command`)
     }
