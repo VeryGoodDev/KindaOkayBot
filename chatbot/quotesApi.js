@@ -7,13 +7,61 @@ function addQuote(sender, quote) {
     createdByUsername: sender.username,
     createdByUserId: sender.userId,
   })
-  newQuote.save()
+  return newQuote.save().then(savedQuote => {
+    return Promise.all([savedQuote, Quote.count()])
+  })
 }
-function getQuote() {}
-function removeQuote() {}
+// function getAllQuotes() {
+//   const quotes = await Quote.find()
+// }
+function getRandomQuote() {
+  return Quote.aggregate([{ $sample: { size: 1 } }]).then(results => {
+    if (results.length) return results[0]
+    throw new Error(`Something went wrong while getting a random quote`)
+  })
+}
+function getQuote(query) {
+  let quote = Promise.resolve({})
+  if (typeof query === `number`) {
+    // If number, search by ID
+    quote = Quote.find()
+      .sort({ created: `asc` })
+      // TODO: May need to offset by 1?
+      .skip(query)
+      .limit(1)
+      .then(results => {
+        if (results.length) return results[0]
+        throw new Error(`Could not find quote number ${query}`)
+      })
+      .catch(err => {
+        console.error(`Error getting quote by number:`, err)
+        return getRandomQuote()
+      })
+  } else if (typeof query === `string` && query.length) {
+    // If string, search by quote content
+    quote = Quote.fuzzySearch(query)
+      .then(matches => {
+        if (matches.length) return matches[0]
+        throw new Error(`No matches for ${query}`)
+      })
+      .catch(err => {
+        console.error(`Error doing fuzzy search in quotes:`, err)
+        return getRandomQuote()
+      })
+  } else {
+    // Otherwise, get random quote
+    quote = getRandomQuote()
+  }
+  return quote
+}
+// function removeQuote(id) {
+//   Quote.findOneAndDelete(
+//     {}
+//   )
+// }
 
 module.exports = {
   addQuote,
   getQuote,
-  removeQuote,
+  // removeQuote,
 }

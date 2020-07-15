@@ -18,14 +18,20 @@ const quoteSchema = new mongoose.Schema({
     trim: true,
     required: `Somehow user info wasn't provided for the viewer who created the quote???`,
   },
+  createdDate: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
+quoteSchema.plugin(require(`mongoose-fuzzy-searching`), { fields: [`quote`] })
+
 // quoteSchema.pre(`save`, function presave(next) {
-//   if (!this.isModified(`quote`)) {
-//     next()
-//     return
-//   }
-//   this.thing = 123
+//   // if (!this.isModified(`quote`)) {
+//   //   next()
+//   //   return
+//   // }
+//   this.createdDate = Date.now()
 //   next()
 // })
 

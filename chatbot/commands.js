@@ -1,4 +1,5 @@
 const { getStreamData } = require(`./twitchApi.js`)
+const { addQuote, getQuote } = require(`./quotesApi.js`)
 
 const commands = {
   // Static simple responses
@@ -141,9 +142,21 @@ const commands = {
   },
   // Not simple responses
   '!addquote': {
-    handler(sender, respond, ...args) {},
+    handler(sender, respond, ...args) {
+      const newQuote = args.join(` `)
+      addQuote(sender, newQuote)
+        .then(([{ quote }, count]) => {
+          respond(`Successfully added quote #${count}! Quote saved as "${quote}"`)
+        })
+        .catch(err => {
+          console.error(`An error occurred while trying add "${newQuote}" as a quote:`, err)
+          respond(
+            `Something went wrong and the quote wasn't saved! You can try again, but if it keeps breaking save it for later and Dev will try to fix the problem soon`
+          )
+        })
+    },
     description: `Use to add a quotation of Dev saying something funny/stupid/way out there/extra derpy`,
-    permissionLevel: [`mods`, `vips`],
+    permissionLevel: [`mods` /* `vips` */],
     hasPermission(sender) {
       // FIXME: Need to figure out how to test if sender is VIP
       return sender.mod === true || sender.vip === true
@@ -156,9 +169,22 @@ const commands = {
     hasPermission(sender) {
       return sender.mod === true
     },
+    exclusive: true,
   },
   '!quote': {
-    handler(sender, respond, ...args) {},
+    handler(sender, respond, ...args) {
+      let query = args.join(` `)
+      if (/^\d+$/.test(query)) query = Number(query) - 1
+      getQuote(query)
+        .then(({ quote }) => {
+          respond(quote)
+        })
+        .catch(err => {
+          console.error(`Error retrieving a quote:`, err)
+          console.error(`Query was ${query || `''`}`)
+          respond(`Something went wrong trying to get a quote. @verygooddev FIX IT`)
+        })
+    },
     description: `Use to get a quote from the collection of Dev quotes. Use \`!quote\` to get a random quote, \`!quote NUMBER\` to get a specific quote by number (e.g. \`!quote 69\`), or \`!quote ONE OR MORE WORDS\` to find the quote that most closely matches the word(s) you put (e.g. \`!quote canned tuna\`)`,
   },
   '!uptime': {
