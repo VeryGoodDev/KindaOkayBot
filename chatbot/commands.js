@@ -77,6 +77,16 @@ const commands = {
     },
     description: `Use to declare your intent to lurk in the creepiest way possible`,
   },
+  '!drivelurk': {
+    handler(sender, respond) {
+      respond(
+        `${
+          sender.displayName
+        } has to drive somewhere, but is keeping the stream up. KEEP YOUR EYES ON THE ROAD ${sender.displayName.toUpperCase()}!!! (and thanks for the lurk)`
+      )
+    },
+    description: `Use to declare your intent to lurk while you're driving`,
+  },
   '!gamelurk': {
     handler(sender, respond, ...args) {
       const game = args.length ? args.join(` `) : `a super dope game`
