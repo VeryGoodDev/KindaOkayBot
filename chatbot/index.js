@@ -90,7 +90,7 @@ function handleMessage(target, context, message, self) {
   }
   if (sender.username === `the_red_headed_raccoon` && !raccoonHasBeenWelcomed) {
     raccoonHasBeenWelcomed = true
-    client.say(target, `Your friendly neighborhood Raccoon! RaccAttack`)
+    client.say(target, `Your friendly neighborhood Raccoon has arrived! RaccAttack`)
   }
   const [originalCommand, ...args] = message.trim().split(/\s+/)
   const command = originalCommand.toLowerCase()
