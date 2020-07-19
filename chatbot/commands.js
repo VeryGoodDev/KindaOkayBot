@@ -207,6 +207,22 @@ const commands = {
   },
 }
 
+const channelPointsCommands = {
+  '!incagbreto': {
+    handler(sender, respond) {
+      respond(
+        `You have now gone incagbreto, any actions you make may not be private and will be recorded by brevil mod`
+      )
+    },
+    hasPermission(sender) {
+      return sender.username === `angelicbre`
+    },
+  },
+}
+for (const command of Object.keys(channelPointsCommands)) {
+  channelPointsCommands[command].exclusive = true
+}
+
 const aliases = {
   '!calendar': `!schedule`,
   '!calender': `!schedule`,
@@ -251,4 +267,4 @@ function getUptimeString(startTime) {
   return uptime
 }
 
-module.exports = { aliases, commands }
+module.exports = { aliases, commands: { ...commands, ...channelPointsCommands } }
