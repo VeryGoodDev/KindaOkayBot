@@ -25,6 +25,12 @@ const commands = {
     },
     description: `Use to get a link to a page listing all the commands for KindaOkayBot`,
   },
+  '!discord': {
+    handler(sender, respond) {
+      respond(`https://discord.gg/XqSQaC3`)
+    },
+    description: `Use to get the invite link to Dev's Discord server`,
+  },
   '!hydrate': {
     handler(sender, respond) {
       respond(`Pssst. Hey you. Drinking water is cool, you should do that.`)
