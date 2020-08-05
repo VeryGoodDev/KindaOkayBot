@@ -255,7 +255,9 @@ const aliases = {
 
 // Can use this to specify a specific adjective to be used for specific streamers
 // e.g. kindaokaybot: `kinda okay`
-const specialAdjectives = {}
+const specialAdjectives = {
+  megmage: `greatest streamer on Twitch`,
+}
 function getAdjective(streamer) {
   if (specialAdjectives[streamer]) return specialAdjectives[streamer]
   const adjectives = [
