@@ -102,6 +102,27 @@ const commands = {
     },
     description: `Use to declare your intent to lurk while playing a game. The game to be played can optionally be specified e.g. \`!gamelurk minecraft\``,
   },
+  '!grouphug': {
+    handler(sender, respond) {
+      respond(`${sender.displayName} gave a big ol group hug to the entire chat! <3`)
+    },
+    description: `Use to give a group hug to everyone in chat`,
+  },
+  '!hug': {
+    handler(sender, respond, ...args) {
+      if (args.length === 0) {
+        respond(`${sender.displayName} gave a hug to a random person in chat <3`)
+      } else if (args.length === 1) {
+        respond(`${sender.displayName} gave a hug to ${args[0]} <3`)
+      } else if (args.length === 2) {
+        respond(`${sender.displayName} gave hugs to ${args[0]} and ${args[1]} <3`)
+      } else {
+        const lastInList = args.pop()
+        respond(`${sender.displayName} gave hugs to ${args.join(`, `)}, and ${lastInList} <3 HUG SKILLS OVER 9000!`)
+      }
+    },
+    description: `Use to give a hug to one or more people in chat. Use \`!hug\` by itself for the hug to just go to someone random, or list one or more names (separated by spaces) after the command to give hugs to all of those people`,
+  },
   '!lurk': {
     handler(sender, respond) {
       respond(
@@ -133,6 +154,14 @@ const commands = {
     },
     permissionLevel: `mods`,
     description: `Use to show some love for fellow streamers. Mod only to avoid the potential for abuse (attempts to use the command if you're not a mod will result in warnings or timeouts)`,
+  },
+  '!sortalurk': {
+    handler(sender, respond) {
+      respond(
+        `${sender.displayName} needs to take some attention away from the stream, but is also liable to pop in and out of chat whenever they please. Sorta thanks for the lurk!`
+      )
+    },
+    description: `Use when you need to be in and out of chat, but not full on lurking`,
   },
   '!stilllurking': {
     handler(sender, respond) {
