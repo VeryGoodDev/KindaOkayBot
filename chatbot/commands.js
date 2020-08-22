@@ -110,10 +110,12 @@ const commands = {
   },
   '!hug': {
     handler(sender, respond, ...args) {
+      const strength = getRandomNumber(0, 100)
+      const judgment = getHugStrengthJudgment(strength)
       if (args.length === 0) {
         respond(`${sender.displayName} gave a hug to a random person in chat <3`)
       } else if (args.length === 1) {
-        respond(`${sender.displayName} gave a hug to ${args[0]} <3`)
+        respond(`${sender.displayName} gave a hug at ${strength}% strength to ${args[0]} <3 ${judgment}`)
       } else if (args.length === 2) {
         respond(`${sender.displayName} gave hugs to ${args[0]} and ${args[1]} <3`)
       } else {
@@ -301,6 +303,22 @@ function getAdjective(streamer) {
   ]
   const idx = Math.floor(Math.random() * (adjectives.length - 1))
   return adjectives[idx]
+}
+function getHugStrengthJudgment(strength) {
+  // Specific numbers
+  if (strength === 100) return `The best of the best at hugging!`
+  if (strength === 69) return `Nice`
+  if (strength === 0) return `I-- did you even hug them?`
+  // Ranges
+  if (strength > 90) return `That was a top notch hug!`
+  if (strength > 70) return `A solid hug for sure!`
+  if (strength > 50) return `A respectable hug`
+  if (strength > 30) return `Pretty decent, I suppose`
+  if (strength > 10) return `I mean, I guess that was all right`
+  return `Single digits? I mean, it was technically a hug, but were you even trying? Kappa`
+}
+function getRandomNumber(min, max) {
+  return min + Math.floor(Math.random() * (max - min + 1))
 }
 function getUptimeString(startTime) {
   let seconds = Math.floor((Date.now() - startTime) / 1000)
