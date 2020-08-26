@@ -18,6 +18,7 @@ const { firstNames, lastNames } = require(`./cumbernames.js`)
 // FIXME: Probably a better way to set up moderation settings?
 let deleteReptileEmotes = false
 let raccoonHasBeenWelcomed = false
+let edHasEntered = false
 
 const client = new tmi.client({
   identity: {
@@ -91,6 +92,10 @@ function handleMessage(target, context, message, self) {
   if (sender.username === `the_red_headed_raccoon` && !raccoonHasBeenWelcomed) {
     raccoonHasBeenWelcomed = true
     client.say(target, `Your friendly neighborhood Raccoon has arrived! RaccAttack`)
+  }
+  if (sender.username === `edwardo` && !edHasEntered) {
+    edHasEntered = true
+    client.say(target, `Ed is here! *sexy music starts playing*`)
   }
   const [originalCommand, ...args] = message.trim().split(/\s+/)
   const command = originalCommand.toLowerCase()
