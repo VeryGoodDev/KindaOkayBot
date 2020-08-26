@@ -108,6 +108,13 @@ const commands = {
     },
     description: `Use to give a group hug to everyone in chat`,
   },
+  '!highfive': {
+    // FIXME: Add support for multiple + aliases
+    handler(sender, respond, recipient) {
+      respond(`${sender.displayName} gives a perfect high five to ${recipient}`)
+    },
+    description: `Use to give a high five to one or more people in chat`,
+  },
   '!hug': {
     handler(sender, respond, ...args) {
       const strength = getRandomNumber(0, 100)
