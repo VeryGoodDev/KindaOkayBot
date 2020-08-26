@@ -41,7 +41,13 @@ function getQuote(query) {
     // If string, search by quote content
     quote = Quote.fuzzySearch(query)
       .then(matches => {
-        if (matches.length) return matches[0]
+        if (matches.length) {
+          // Too lazy to figure out why, but despite being logged out as part of match,
+          // accessing confidenceScore directly just gives back undefined. Stringifying
+          // and then parsing it seems to fix it
+          const satisfactoryMatches = matches.filter(match => JSON.parse(JSON.stringify(match)).confidenceScore > 2)
+          return satisfactoryMatches[Math.floor(Math.random() * satisfactoryMatches.length)]
+        }
         throw new Error(`No matches for ${query}`)
       })
       .catch(err => {
