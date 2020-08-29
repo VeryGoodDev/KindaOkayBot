@@ -1,0 +1,36 @@
+{
+  "target": "#verygooddev",
+  "context": {
+    "badge-info": null,
+    "badges": null,
+    "client-nonce": "3cce8a42ffeeeafd995b43c1e56b7945",
+    "color": "#8A2BE2",
+    "display-name": "Jelavay",
+    "emotes": {
+      "301334628": [
+        null
+      ],
+      "301640466": [
+        null
+      ],
+      "302098282": [
+        null
+      ]
+    },
+    "flags": null,
+    "id": "50246775-7987-4643-be2e-8cf20bae3eaf",
+    "mod": false,
+    "room-id": "231806598",
+    "subscriber": false,
+    "tmi-sent-ts": "1591567992294",
+    "turbo": false,
+    "user-id": "87104756",
+    "user-type": null,
+    "emotes-raw": "301334628:0-9,73-82/301640466:11-20,62-71/302098282:22-31,51-60",
+    "badge-info-raw": null,
+    "badges-raw": null,
+    "username": "jelavay",
+    "message-type": "chat"
+  },
+  "message": "megmagHype megmagLove megmagPout MAGICAL MAGE RAID megmagPout megmagLove megmagHype"
+}
