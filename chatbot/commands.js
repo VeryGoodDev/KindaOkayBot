@@ -93,6 +93,18 @@ const commands = {
     },
     description: `Use to declare your intent to lurk while you're driving`,
   },
+  '!elliehug': {
+    handler(sender, respond) {
+      if (sender.displayName === `zierse`) {
+        respond(
+          `zierse gives Ellie the greatest hug the world has ever seen. Attempting to calculate the strength of a Zellie hug would destroy any bot, so in the interest of self preservation, I'll just say it was ${getHugDescriptor()}`
+        )
+      } else {
+        respond(`${sender.displayName} hugs Ellie with 100% love, because she deserves it and is huggable af!`)
+      }
+    },
+    description: `Use to give a virtual hug to Ellie (@rainbowcanoe)`,
+  },
   '!gamelurk': {
     handler(sender, respond, ...args) {
       const game = args.length ? args.join(` `) : `a super dope game`
@@ -106,7 +118,7 @@ const commands = {
     handler(sender, respond) {
       respond(`${sender.displayName} gave a big ol group hug to the entire chat! <3`)
     },
-    description: `Use to give a group hug to everyone in chat`,
+    description: `Use to give a virtual group hug to everyone in chat`,
   },
   '!highfive': {
     // FIXME: Add support for multiple + aliases
@@ -130,7 +142,7 @@ const commands = {
         respond(`${sender.displayName} gave hugs to ${args.join(`, `)}, and ${lastInList} <3 HUG SKILLS OVER 9000!`)
       }
     },
-    description: `Use to give a hug to one or more people in chat. Use \`!hug\` by itself for the hug to just go to someone random, or list one or more names (separated by spaces) after the command to give hugs to all of those people`,
+    description: `Use to give a virtual hug to one or more people in chat. Use \`!hug\` by itself for the hug to just go to someone random, or list one or more names (separated by spaces) after the command to give hugs to all of those people`,
   },
   '!lurk': {
     handler(sender, respond) {
@@ -310,6 +322,16 @@ function getAdjective(streamer) {
   ]
   const idx = Math.floor(Math.random() * (adjectives.length - 1))
   return adjectives[idx]
+}
+function getHugDescriptor() {
+  const descriptors = [
+    `a ridiculously amazing hug`,
+    `an immeasurably phenomenal hug`,
+    `an epically impressive hug`,
+    `a hug that puts all other hugs to shame`,
+  ]
+  const idx = Math.floor(Math.random() * (descriptors.length - 1))
+  return descriptors[idx]
 }
 function getHugStrengthJudgment(strength) {
   // Specific numbers
