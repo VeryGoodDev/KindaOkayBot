@@ -139,7 +139,11 @@ const commands = {
         respond(`${sender.displayName} gave hugs to ${args[0]} and ${args[1]} <3`)
       } else {
         const lastInList = args.pop()
-        respond(`${sender.displayName} gave hugs to ${args.join(`, `)}, and ${lastInList} <3 HUG SKILLS OVER 9000!`)
+        respond(
+          `${sender.displayName} gave hugs to ${args
+            .map(name => name.replace(/,$/, ``))
+            .join(`, `)}, and ${lastInList} <3 HUG SKILLS OVER 9000!`
+        )
       }
     },
     description: `Use to give a virtual hug to one or more people in chat. Use \`!hug\` by itself for the hug to just go to someone random, or list one or more names (separated by spaces) after the command to give hugs to all of those people`,
