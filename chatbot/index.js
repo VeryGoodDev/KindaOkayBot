@@ -64,6 +64,11 @@ function handleMessage(target, context, message, self) {
   const sender = transformUserData(context)
   console.log({ sender, message })
   // TODO: Add any moderation
+  // TODO: To block annoying "wanna be famous" spam, this regex can catch most
+  // "weird" character versions of famous: word.match(/\p{L}/giu).join('') === 'famous'
+  // Would have to go word by word, but should catch at least some
+  // Also can block on known spam sites
+  // - bigfollows\s*\.com
   if (deleteReptileEmotes) {
     // FIXME: CHALLENGE: See if there's a one-regex way to do this (e.g. lookahead/behind)
     if ([/^KomodoHype$/, /^KomodoHype\b/, /\bKomodoHype$/, /\bKomodoHype\b/].some(regex => regex.test(message))) {
