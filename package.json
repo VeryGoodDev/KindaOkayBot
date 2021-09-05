@@ -18,10 +18,10 @@
   },
   "homepage": "https://github.com/VeryGoodDev/kindaokaybot#readme",
   "engines": {
-    "node": "12.x"
+    "node": ">=12.x"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "mongoose": "^5.9.24",
     "mongoose-fuzzy-searching": "^1.3.1",
     "tmi.js": "^1.5.0"

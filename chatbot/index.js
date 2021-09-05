@@ -2,14 +2,14 @@ require(`dotenv`).config()
 const mongoose = require(`mongoose`)
 
 // Create database connection
-mongoose.connect(process.env.DATABASE_CONNECTION)
-mongoose.Promise = global.Promise
-mongoose.connection.on(`error`, err => {
-  console.error(`ERROR CONNECTING TO MONGOOSE: ${err.message}`)
-})
-// Just importing the models on startup will make it so mongoose
-// can use them wherever else it's pulled in
-require(`../models/Quote`)
+// mongoose.connect(process.env.DATABASE_CONNECTION)
+// mongoose.Promise = global.Promise
+// mongoose.connection.on(`error`, err => {
+//   console.error(`ERROR CONNECTING TO MONGOOSE: ${err.message}`)
+// })
+// // Just importing the models on startup will make it so mongoose
+// // can use them wherever else it's pulled in
+// require(`../models/Quote`)
 
 const tmi = require(`tmi.js`)
 const { aliases, commands } = require(`./commands.js`)
@@ -52,7 +52,7 @@ client.on(`join`, (target, username, self) => {
 client.on(`part`, (target, username, self) => {
   if (self) console.log(`The bot left I guess?`)
 })
-client.on(`disconnected`, reason => {
+client.on(`disconnected`, (reason) => {
   console.log(`Disconnected for the following reason:`, reason)
 })
 client.connect()
@@ -60,7 +60,7 @@ client.connect()
 function handleMessage(target, context, message, self) {
   // Do nothing if message is from the bot and isn't a command
   if (self && !/^!.+/.test(message)) return
-  const respond = msg => client.say(target, msg)
+  const respond = (msg) => client.say(target, msg)
   const sender = transformUserData(context)
   console.log({ sender, message })
   // TODO: Add any moderation
@@ -71,11 +71,11 @@ function handleMessage(target, context, message, self) {
   // - bigfollows\s*\.com
   if (deleteReptileEmotes) {
     // FIXME: CHALLENGE: See if there's a one-regex way to do this (e.g. lookahead/behind)
-    if ([/^KomodoHype$/, /^KomodoHype\b/, /\bKomodoHype$/, /\bKomodoHype\b/].some(regex => regex.test(message))) {
+    if ([/^KomodoHype$/, /^KomodoHype\b/, /\bKomodoHype$/, /\bKomodoHype\b/].some((regex) => regex.test(message))) {
       console.log(`ILLEGAL EMOTE`)
       client
         .deletemessage(target, sender.id)
-        .catch(err => {
+        .catch((err) => {
           console.error(`Error trying to delete illegal message:`, err)
         })
         .then(() => {
