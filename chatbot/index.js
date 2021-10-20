@@ -1,5 +1,5 @@
 require(`dotenv`).config()
-const mongoose = require(`mongoose`)
+// const mongoose = require(`mongoose`)
 
 // Create database connection
 // mongoose.connect(process.env.DATABASE_CONNECTION)
