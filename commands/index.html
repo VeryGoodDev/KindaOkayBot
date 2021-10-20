@@ -26,7 +26,6 @@
       width: 100%;
     }
     th, td {
-      /* border: 1px solid black; */
       padding: 0.5em 0.75em;
       text-align: left;
     }
@@ -154,9 +153,9 @@
   const tableBody = document.querySelector(`tbody`)
   tableBody.innerHTML = ``
   for (const [command, data] of [
-    ...Object.entries(module.exports.commands).filter(commandData => !commandData[1].exclusive),
+    ...Object.entries(module.exports.commands).filter((commandData) => !commandData[1].exclusive),
     ...Object.entries(module.exports.aliases)
-      .filter(aliasData => !module.exports.commands[aliasData[1]].exclusive)
+      .filter((aliasData) => !module.exports.commands[aliasData[1]].exclusive)
       .map(([alias, realCommand]) => [
         alias,
         {
