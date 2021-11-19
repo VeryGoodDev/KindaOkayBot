@@ -3,6 +3,14 @@ const { getStreamData } = require(`./twitchApi.js`)
 
 const commands = {
   // Static simple responses
+  '!alerts': {
+    handler(sender, respond) {
+      respond(
+        `After becoming aware of how trashy and scummy Streamlabs has been, apparently for basically their entire existence, Dev has eradicated all of his uses of Streamlabs products, including their alert box. Unfortunately, that means no alerts will show up on stream until he finds a replacement, although most events will still be announced by the bot (that's me!) in chat.`
+      )
+    },
+    description: `Temporary placeholder to explain why there are no alerts, to be removed once a replacement has been found`,
+  },
   '!bot': {
     handler(sender, respond) {
       respond(
