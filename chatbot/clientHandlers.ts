@@ -1,5 +1,6 @@
 /* eslint-disable max-params -- I don't control how many params TMI event handlers can take */
-import { niceJson } from './util'
+import { handleCommand, handleModeration, handleSpecialProcessing, handleUserGreet } from './chatHelpers'
+import { isCommand, niceJson } from './util'
 
 import type {
   AnonSubGiftUpgradeUserstate,
@@ -48,16 +49,28 @@ const handlers: Partial<HandlerMap<Events>> = {
     }
   },
   // TODO
-  chat({ sendInChat }) {
+  chat(clientHelpers) {
     return (channel: string, userState: ChatUserstate, message: string, isSelf: boolean) => {
-      const args = niceJson({
-        channel,
-        isSelf,
-        message,
-        sendInChat,
-        userState,
-      })
-      console.log(`chat event received with args: ${args}`)
+      // TODO Add logging (datetime, username, message)
+      const messageIsCommand = isCommand(message)
+
+      // Do nothing for bot messages, unless the bot is running a command
+      if (isSelf && !messageIsCommand) {
+        return
+      }
+
+      const shouldStopProcessing = handleModeration(message, userState)
+      if (shouldStopProcessing) {
+        return
+      }
+
+      handleUserGreet(userState)
+
+      if (messageIsCommand) {
+        handleCommand(message, { channel, clientHelpers, userState })
+      } else {
+        handleSpecialProcessing(message)
+      }
     }
   },
   // TODO
@@ -70,17 +83,6 @@ const handlers: Partial<HandlerMap<Events>> = {
         userState,
       })
       console.log(`cheer event received with args: ${args}`)
-    }
-  },
-  // TODO
-  connected({ sendInChat }) {
-    return (address: string, port: number) => {
-      const args = niceJson({
-        address,
-        port,
-        sendInChat,
-      })
-      console.log(`connected event received with args: ${args}`)
     }
   },
   // TODO
@@ -239,5 +241,6 @@ const handlers: Partial<HandlerMap<Events>> = {
     }
   },
 }
+
 export default handlers
 export type { ClientHelpers }

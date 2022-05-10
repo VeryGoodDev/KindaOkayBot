@@ -1,4 +1,9 @@
 /**
+ * Small helper to make code more readable/searchable anywhere that checks whether a chat should be parsed as a command.
+ */
+export const isCommand = (message: string): boolean => message.startsWith(`!`)
+
+/**
  * Returns the current date as a string in the format of `MM/DD, hh:mm`. The time will be in 24 hour format.
  */
 export const niceDate = (): string =>
