@@ -1,6 +1,7 @@
 /* eslint-disable max-params -- I don't control how many params TMI event handlers can take */
 import { handleCommand, handleModeration, handleSpecialProcessing, handleUserGreet } from './chatHelpers'
-import { isCommand, niceJson } from './util'
+import { getDisplayName } from './userHelpers'
+import { isCommand, niceJson, pluralize } from './util'
 
 import type {
   AnonSubGiftUpgradeUserstate,
@@ -106,6 +107,11 @@ const handlers: Partial<HandlerMap<Events>> = {
         userState,
       })
       console.log(`giftpaidupgrade event received with args: ${args}`)
+
+      sendInChat(
+        channel,
+        `${getDisplayName(userState)} is continuing the gift sub they received from ${sender}! Thanks for the support!`
+      )
     }
   },
   // TODO
@@ -134,14 +140,11 @@ const handlers: Partial<HandlerMap<Events>> = {
   },
   // TODO
   raided({ sendInChat }) {
-    return (channel: string, username: string, raiderCount: number) => {
-      const args = niceJson({
+    return (channel: string, raider: string, raiderCount: number) => {
+      sendInChat(
         channel,
-        raiderCount,
-        sendInChat,
-        username,
-      })
-      console.log(`raided event received with args: ${args}`)
+        `${raider} has raided with ${raiderCount} ${pluralize(raiderCount, `raider`)}! Welcome raiders!`
+      )
     }
   },
   // TODO
