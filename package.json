@@ -6,12 +6,12 @@
   "repository": "https://github.com/VeryGoodDev/kindaokaybot",
   "author": "VeryGoodDev <very_good_dev@outlook.com>",
   "license": "MIT",
-  "type": "module",
   "engines": {
     "node": ">=16.x"
   },
   "scripts": {
-    "start": "nodemon chatbot/index.js"
+    "dev": "node ./scripts/dev.cjs",
+    "start": "node ./scripts/build.cjs && node ./dist/chatbot/index.js"
   },
   "dependencies_old": {
     "axios": "^0.21.1",
@@ -31,7 +31,7 @@
     "@types/node": "^17.0.31",
     "@types/tmi.js": "^1.8.1",
     "@vgd/esbuild-util": "^0.3.1",
-    "@vgd/eslint-config-personal": "^0.8.0",
+    "@vgd/eslint-config-personal": "^0.8.2",
     "dotenv": "^16.0.0",
     "eslint": "^8.15.0",
     "nodemon": "^2.0.16",

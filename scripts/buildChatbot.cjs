@@ -7,7 +7,6 @@ const { createBuildRunner } = require(`@vgd/esbuild-util`)
 const chatbotBuildRunner = createBuildRunner({
   bundle: true,
   entryPoints: [`chatbot/index.ts`],
-  format: `esm`,
   outdir: `dist/chatbot`,
   platform: `node`,
 })
