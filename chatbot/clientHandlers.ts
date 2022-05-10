@@ -1,6 +1,6 @@
 /* eslint-disable max-params -- I don't control how many params TMI event handlers can take */
 import { handleCommand, handleModeration, handleSpecialProcessing, handleUserGreet } from './chatHelpers'
-import { getDisplayName } from './userHelpers'
+import { getDisplayName, getUsername } from './userHelpers'
 import { isCommand, niceJson, pluralize } from './util'
 
 import type {
@@ -76,14 +76,18 @@ const handlers: Partial<HandlerMap<Events>> = {
   },
   // TODO
   cheer({ sendInChat }) {
-    return (channel: string, userState: ChatUserstate, message: string) => {
-      const args = niceJson({
-        channel,
-        message,
-        sendInChat,
-        userState,
-      })
-      console.log(`cheer event received with args: ${args}`)
+    return (channel: string, userState: ChatUserstate) => {
+      // NOTE can get message: string as third param if needed for anything
+      const bitCount = Number(userState.bits)
+      if (bitCount > 0) {
+        sendInChat(
+          channel,
+          `${getDisplayName(userState)} just cheered with ${bitCount} ${pluralize(
+            bitCount,
+            `bit`
+          )}! Thanks for the support!`
+        )
+      }
     }
   },
   // TODO
@@ -96,18 +100,8 @@ const handlers: Partial<HandlerMap<Events>> = {
       console.log(`disconnected event received with args: ${args}`)
     }
   },
-  // TODO
   giftpaidupgrade({ sendInChat }) {
     return (channel: string, username: string, sender: string, userState: SubGiftUpgradeUserstate) => {
-      const args = niceJson({
-        channel,
-        sender,
-        sendInChat,
-        username,
-        userState,
-      })
-      console.log(`giftpaidupgrade event received with args: ${args}`)
-
       sendInChat(
         channel,
         `${getDisplayName(userState)} is continuing the gift sub they received from ${sender}! Thanks for the support!`
@@ -138,7 +132,6 @@ const handlers: Partial<HandlerMap<Events>> = {
       console.log(`part event received with args: ${args}`)
     }
   },
-  // TODO
   raided({ sendInChat }) {
     return (channel: string, raider: string, raiderCount: number) => {
       sendInChat(
@@ -160,18 +153,24 @@ const handlers: Partial<HandlerMap<Events>> = {
       console.log(`redeem event received with args: ${args}`)
     }
   },
-  // TODO
   resub({ sendInChat }) {
-    return (channel: string, username: string, months: number, message: string, userState: SubUserstate) => {
-      const args = niceJson({
+    return (
+      channel: string,
+      username: string,
+      months: number,
+      message: string,
+      userState: SubUserstate,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TEMP
+      subMethods: SubMethods
+    ) => {
+      // TODO call out number of months/streaks
+      // TODO call out tier/prime/etc via subMethods info
+      // TODO userState has info on cumulative months and whether to share the streak
+      sendInChat(
         channel,
-        message,
-        months,
-        sendInChat,
-        username,
-        userState,
-      })
-      console.log(`resub event received with args: ${args}`)
+        `${getUsername(userState)} has resubscribed! Thanks for the 
+      support!`
+      )
     }
   },
   // TODO
@@ -196,38 +195,27 @@ const handlers: Partial<HandlerMap<Events>> = {
       console.log(`subgift event received with args: ${args}`)
     }
   },
-  // TODO
   submysterygift({ sendInChat }) {
     return (
       channel: string,
       username: string,
       numSubsGifted: number,
-      methods: SubMethods,
+      subMethods: SubMethods,
       userState: SubMysteryGiftUserstate
     ) => {
-      const args = niceJson({
+      sendInChat(
         channel,
-        methods,
-        numSubsGifted,
-        sendInChat,
-        username,
-        userState,
-      })
-      console.log(`submysterygift event received with args: ${args}`)
+        `${getDisplayName(userState)} is gifting ${numSubsGifted} ${pluralize(
+          numSubsGifted,
+          `sub`
+        )} to the community! Thanks for the support!`
+      )
     }
   },
-  // TODO
   subscription({ sendInChat }) {
-    return (channel: string, username: string, methods: SubMethods, message: string, userState: SubUserstate) => {
-      const args = niceJson({
-        channel,
-        message,
-        methods,
-        sendInChat,
-        username,
-        userState,
-      })
-      console.log(`subscription event received with args: ${args}`)
+    return (channel: string, username: string, subMethods: SubMethods, message: string, userState: SubUserstate) => {
+      // TODO Acknowledge tier/prime/etc from subMethods
+      sendInChat(channel, `${getDisplayName(userState)} has just subscribed! Thanks for the support!`)
     }
   },
   // TODO
