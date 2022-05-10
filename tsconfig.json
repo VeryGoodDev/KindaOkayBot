@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    // Basic Options
+    "module": "commonjs",
+    "newLine": "lf",
+    "outDir": "build",
+    "target": "ESNext",
+
+    // Strict Type-Checking Options
+    "esModuleInterop": true,
+    "strict": true,
+
+    // Advanced Options
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    // JSX Options
+    "jsx": "preserve",
+    "jsxImportSource": "preact",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+
+    "baseUrl": "/node_modules",
+    "paths": {
+      "react": ["preact/compat"],
+      "react-dom": ["preact/compat"],
+    }
+  }
+}
