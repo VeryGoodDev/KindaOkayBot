@@ -4,7 +4,7 @@ import { isCommand } from './util'
 import type { ClientHelpers } from './clientHandlers'
 import type { Userstate } from 'tmi.js'
 
-interface Command {
+interface CommandComponents {
   command: string
   commandArgs: string[]
   originalCommand: string
@@ -15,7 +15,7 @@ interface ChatProcessingPeripherals {
   userState: Userstate
 }
 
-const parseCommand = (message: string): Command => {
+const parseCommand = (message: string): CommandComponents => {
   const [originalCommand, ...commandArgs] = message.trim().split(/\s+/)
   const command = originalCommand.toLowerCase()
   return { command, commandArgs, originalCommand }
