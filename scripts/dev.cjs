@@ -19,13 +19,15 @@ void buildChatbot({
     stdio: [`inherit`, `inherit`, `inherit`, `ipc`],
   })
 
+  let isFirstStart = true
   botProcess.on(`message`, (message) => {
     if (message.type === `crash`) {
       console.error(`[dev] 😱 Chatbot crashed!`)
     } else if (message.type === `restart`) {
       console.log(`[dev] 🔃 Chatbot successfully restarted`)
-    } else if (message.type === `start`) {
+    } else if (message.type === `start` && isFirstStart) {
       console.log(`[dev] ✅ Chatbot successfully started`)
+      isFirstStart = false
     }
   })
 
