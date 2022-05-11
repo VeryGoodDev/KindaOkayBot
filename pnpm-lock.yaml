@@ -4,7 +4,7 @@ specifiers:
   '@types/node': ^17.0.31
   '@types/tmi.js': ^1.8.1
   '@vgd/esbuild-util': ^0.3.1
-  '@vgd/eslint-config-personal': ^0.8.2
+  '@vgd/eslint-config-personal': ^0.8.3
   dotenv: ^16.0.0
   eslint: ^8.15.0
   nodemon: ^2.0.16
@@ -18,7 +18,7 @@ devDependencies:
   '@types/node': 17.0.31
   '@types/tmi.js': 1.8.1
   '@vgd/esbuild-util': 0.3.1
-  '@vgd/eslint-config-personal': 0.8.2_hcfsmds2fshutdssjqluwm76uu
+  '@vgd/eslint-config-personal': 0.8.3_hcfsmds2fshutdssjqluwm76uu
   dotenv: 16.0.0
   eslint: 8.15.0
   nodemon: 2.0.16
@@ -30,7 +30,7 @@ packages:
     resolution: {integrity: sha512-WxYHHUWF2uZ7Hp1K+D1xQgbgkGUfA+5UPOegEXGt2Y5SMog/rYCVaifLZDbw8UkNXozEqqrZTy6bglL7xTaCOw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      core-js-pure: 3.22.4
+      core-js-pure: 3.22.5
       regenerator-runtime: 0.13.9
     dev: true
 
@@ -255,8 +255,8 @@ packages:
       esbuild-plugin-alias: 0.2.1
     dev: true
 
-  /@vgd/eslint-config-personal/0.8.2_hcfsmds2fshutdssjqluwm76uu:
-    resolution: {integrity: sha512-BjFmQoqpZ9aK5/Ktvulz9KS8dgdad7+XCRuJUD/b9yLxQRMs0ddYy0MHDpTeI1ZHhcxdiwSyJ2TYX8kobhjoLw==}
+  /@vgd/eslint-config-personal/0.8.3_hcfsmds2fshutdssjqluwm76uu:
+    resolution: {integrity: sha512-D0CsddxZlhHborTg3lR0MzeRpVDzgihR7Db8pQ1CaEsZ+8ncHabEqDbmPbwkfXlXQUh+x56aQnk+CCHvVFQ+0w==}
     peerDependencies:
       eslint: ^8.13.0
     dependencies:
@@ -534,8 +534,8 @@ packages:
       xdg-basedir: 4.0.0
     dev: true
 
-  /core-js-pure/3.22.4:
-    resolution: {integrity: sha512-4iF+QZkpzIz0prAFuepmxwJ2h5t4agvE8WPYqs2mjLJMNNwJOnpch76w2Q7bUfCPEv/V7wpvOfog0w273M+ZSw==}
+  /core-js-pure/3.22.5:
+    resolution: {integrity: sha512-8xo9R00iYD7TcV7OrC98GwxiUEAabVWO3dix+uyWjnYrx9fyASLlIX+f/3p5dW5qByaP2bcZ8X/T47s55et/tA==}
     requiresBuild: true
     dev: true
 
