@@ -1,4 +1,25 @@
 /**
+ * Takes a list of strings and turns it into a string in the format of "Item 1, Item 2, and Item 3". Use instead of `Array.join` to get the more natural ", and <lastItem>" grammatical structure. Also supports empty lists (returns empty string), lists with only one item (returns just that item), and lists with two items (returns "Item 1 and Item 2" with no commas)
+ */
+export const getCommaSeparatedList = (list: string[]): string => {
+  if (list.length === 0) {
+    return ``
+  }
+  if (list.length === 1) {
+    return list[0]
+  }
+  if (list.length === 2) {
+    return `${list[0]} and ${list[1]}`
+  }
+  const [lastInList] = list.slice(-1)
+  const commaSeparatedPortion = list
+    .slice(0, -1)
+    .map((item) => item.replace(/,$/, ``))
+    .join(`, `)
+  return `${commaSeparatedPortion}, and ${lastInList}`
+}
+
+/**
  * Small helper to make code more readable/searchable anywhere that checks whether a chat should be parsed as a command.
  */
 export const isCommand = (message: string): boolean => message.startsWith(`!`)
