@@ -1,4 +1,4 @@
-const { getStreamData } = require(`./twitchApi.js`)
+// const { getStreamData } = require(`./twitchApi.js`)
 // const { addQuote, getQuote } = require(`./quotesApi.js`)
 
 const commands = {
@@ -263,19 +263,20 @@ const commands = {
   },
   '!uptime': {
     handler(sender, respond) {
-      getStreamData().then(({ data = [] }) => {
-        if (!data.length) {
-          respond(`Dev isn't currently streaming. Feel free to follow to be notified the next time he goes live!`)
-        } else {
-          const [stream] = data
-          const startTime = new Date(stream.started_at).getTime()
-          if (!Number.isNaN(startTime)) {
-            respond(`Dev has been live for ${getUptimeString(startTime)}`)
-          } else {
-            respond(`Somehow this command didn't work. Awkward...`)
-          }
-        }
-      })
+      respond(`Temporarily broken until Dev finishes rewriting his bot code. For now, feel to free to check under the stream player for the uptime as provided by Twitch`)
+      // getStreamData().then(({ data = [] }) => {
+      //   if (!data.length) {
+      //     respond(`Dev isn't currently streaming. Feel free to follow to be notified the next time he goes live!`)
+      //   } else {
+      //     const [stream] = data
+      //     const startTime = new Date(stream.started_at).getTime()
+      //     if (!Number.isNaN(startTime)) {
+      //       respond(`Dev has been live for ${getUptimeString(startTime)}`)
+      //     } else {
+      //       respond(`Somehow this command didn't work. Awkward...`)
+      //     }
+      //   }
+      // })
     },
     description: `Use to find out how long Dev has been live`,
   },
