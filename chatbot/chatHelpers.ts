@@ -1,11 +1,13 @@
+import commandMap from './commands'
 import { getUsername } from './userHelpers'
 import { isCommand } from './util'
 
 import type { ClientHelpers } from './clientHandlers'
+import type { Command } from './commands'
 import type { Userstate } from 'tmi.js'
 
 interface CommandComponents {
-  command: string
+  command: Command
   commandArgs: string[]
   originalCommand: string
 }
@@ -17,7 +19,7 @@ interface ChatProcessingPeripherals {
 
 const parseCommand = (message: string): CommandComponents => {
   const [originalCommand, ...commandArgs] = message.trim().split(/\s+/)
-  const command = originalCommand.toLowerCase()
+  const command = originalCommand.toLowerCase() as Command
   return { command, commandArgs, originalCommand }
 }
 
@@ -29,12 +31,11 @@ export const handleCommand = (
     return
   }
   const { command, commandArgs } = parseCommand(message)
-  console.log(
-    `command "${command}" run by ${getUsername(userState)} with ${commandArgs.length} ${
-      commandArgs.length === 1 ? `arg` : `args`
-    }`
-  )
-  clientHelpers.sendInChat(channel, `nice command`)
+
+  if (command in commandMap) {
+    const response = commandMap[command].getResponse(userState, ...commandArgs)
+    clientHelpers.sendInChat(channel, response)
+  }
 }
 
 /**
