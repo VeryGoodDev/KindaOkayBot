@@ -138,6 +138,7 @@ const handlers: Partial<HandlerMap<Events>> = {
         channel,
         `${raider} has raided with ${raiderCount} ${pluralize(raiderCount, `raider`)}! Welcome raiders!`
       )
+      sendInChat(channel, `!so ${raider}`)
     }
   },
   // TODO
