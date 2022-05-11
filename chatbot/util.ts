@@ -25,3 +25,24 @@ export const niceJson = (obj: unknown): string => JSON.stringify(obj, null, 2)
  */
 export const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
   count === 1 ? singular : plural
+
+/**
+ * Returns a random integer between `min` and `max`, excluding `max`. Pass `true` as a third argument to make it inclusive, i.e. able to have a chance to return `max`. Caveats:
+ * - if `min` is greater than `max`, a `RangeError` will be thrown
+ * - if either `min` or `max` is not an integer, a `TypeError` will be thrown
+ */
+export const randomFromRange = (min: number, max: number, inclusive = false): number => {
+  if (min > max) {
+    throw new RangeError(`The min value must always be larger than the max value`)
+  }
+  if (!Number.isInteger(min) || !Number.isInteger(max)) {
+    throw new TypeError(`The min and max values must both be integers`)
+  }
+  return min + Math.floor(Math.random() * (max - min + (inclusive ? 1 : 0)))
+}
+
+/** Returns a pseudo-randomly chosen item from the provided array of options */
+export const chooseRandom = <T>(options: T[]): T => {
+  const index = randomFromRange(0, options.length)
+  return options[index]
+}
