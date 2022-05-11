@@ -3,7 +3,7 @@ export const customizeResponse = (template: string, customizations: Record<strin
   for (const [placeholder, value] of Object.entries(customizations)) {
     customized = customized.replace(`{{${placeholder}}}`, value)
   }
-  return customized
+  return customized.trim()
 }
 
 export const INTERACTION = `{{displayName}} gave {{interaction}} to {{recipient}} {{emote}}`
