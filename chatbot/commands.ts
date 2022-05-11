@@ -15,7 +15,7 @@ const commandMap: Record<Command, CommandData> = {
     },
   },
   '!bytes': {
-    description: `Provides some info about Dev's channel points`,
+    description: `Provides a little info about Dev's channel points`,
     getResponse() {
       return `Dev's channel points are called bytes. There aren't a lot of custom ones right now, so if you have any cool ideas, feel free to share in chat for Dev to consider!`
     },
