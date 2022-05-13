@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention -- Keys in commandMap specifically don't follow this rule */
-import { customizeResponse, INTERACTION } from './commandResponseStrings'
+import { customizeResponse, INTERACTION, SHOUTOUT_DESCRIPTORS } from './commandResponseHelpers'
 import { getDisplayName } from './userHelpers'
 import { chooseRandom, getCommaSeparatedList } from './util'
 
@@ -10,7 +10,7 @@ interface CommandData {
   description: string
   getResponse: (userState: Userstate, ...args: string[]) => string
 }
-type CommandMap = Record<Command, CommandData>
+type CommandMap = Record<string, CommandData>
 
 const staticCommands: CommandMap = {
   '!bot': {
@@ -110,12 +110,85 @@ const simpleDynamicCommands: CommandMap = {
       })
     },
   },
+  '!lurk': {
+    description: `Use to declare your intent to go into lurker mode`,
+    getResponse(userState) {
+      return `${getDisplayName(
+        userState
+      )} is lurking in the shadows, still in chat but now from a distance. Thanks for the lurk!`
+    },
+  },
+  '!sleepylurk': {
+    description: `Use to declare your intent to go to bed, but still have the stream up as a lurker`,
+    getResponse(userState) {
+      return `As ${getDisplayName(
+        userState
+      )} lays down to sleep / Within the stream they stay to creep. Have a good sleep HahaSleep thanks for the lurk!`
+    },
+  },
+  '!so': {
+    description: `Use to put a shoutout in chat for a fellow streamer`,
+    getResponse(userState, streamerParam) {
+      const streamer = streamerParam.replace(/^@/, ``)
+      const descriptor = chooseRandom(SHOUTOUT_DESCRIPTORS)
+      return `Shout out to the ${descriptor} ${streamer}! Go show them some love at https://twitch.tv/${streamer.toLowerCase()}`
+    },
+  },
+  '!sortalurk': {
+    description: `Use to declare your intent to still be in and out of chat, but not quite fully lurking`,
+    getResponse(userState) {
+      return `${getDisplayName(
+        userState
+      )} needs to direct some attention away from the stream, but is also planning to pop in and out of chat whenever they please. Sorta thanks for the sorta lurk!`
+    },
+  },
+  '!stilllurking': {
+    description: `Use to check in on the stream while lurking, but before you're able to completely come out of lurk mode`,
+    getResponse(userState) {
+      return `${getDisplayName(
+        userState
+      )} has been lurking and is just popping in to provide an update: they are still lurking. We appreciate this important update`
+    },
+  },
+  '!unlurk': {
+    description: `Use to declare that your lurk is done and you're hanging out in chat again`,
+    getResponse(userState) {
+      return `${getDisplayName(
+        userState
+      )} has left the shadows and is out of lurk mode. Thanks for lurking and welcome back!`
+    },
+  },
+  '!worklurk': {
+    description: `Use to declare your intent to lurk while working`,
+    getResponse(userState) {
+      return `${getDisplayName(
+        userState
+      )} has to work, but decided that they wanted to stop by the stream first and have it in the background while they're working. May your time spent working go well, and thanks for the lurk!`
+    },
+  },
 }
 
-const commandMap: CommandMap = {
+const channelPointRedemptionCommands: CommandMap = {
+  '!incagbreto': {
+    description: ``,
+    getResponse() {
+      return `You have now gone incagbreto, any actions you make may not be private and will be recorded by brevil mod`
+    },
+  },
+}
+
+const quoteCommands: CommandMap = {}
+
+const twitchApiCommands: CommandMap = {}
+
+const commandMap = {
   ...staticCommands,
   ...simpleDynamicCommands,
+  ...channelPointRedemptionCommands,
+  ...quoteCommands,
+  ...twitchApiCommands,
 }
 
 export default commandMap
+export { staticCommands, simpleDynamicCommands, channelPointRedemptionCommands, quoteCommands, twitchApiCommands }
 export type { Command, CommandData }
