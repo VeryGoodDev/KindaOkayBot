@@ -206,11 +206,11 @@ const handlers: Partial<HandlerMap<Events>> = {
   },
   // TODO
   followersonly() {
-    return (channel: string, enabled: boolean, duration: number) => {
+    return (channel: string, enabled: boolean, minutesSinceFollow: number) => {
       const args = niceJson({
         channel,
-        duration,
         enabled,
+        minutesSinceFollow,
       })
 
       console.log(`followersonly event received with args: ${args}`)
@@ -433,10 +433,10 @@ const handlers: Partial<HandlerMap<Events>> = {
   },
   // TODO
   slowmode() {
-    return (channel: string, enabled: boolean, duration: number) => {
+    return (channel: string, enabled: boolean, cooldownBetweenMessages: number) => {
       const args = niceJson({
         channel,
-        duration,
+        cooldownBetweenMessages,
         enabled,
       })
 
