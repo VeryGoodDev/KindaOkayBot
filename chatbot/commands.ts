@@ -187,7 +187,7 @@ const twitchApiCommands: CommandMap = {}
 const commandMap = {
   ...staticCommands,
   ...simpleDynamicCommands,
-  ...channelPointRedemptionCommands,
+  // ...channelPointRedemptionCommands,
   ...quoteCommands,
   ...twitchApiCommands,
 }
