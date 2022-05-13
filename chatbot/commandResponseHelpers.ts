@@ -6,4 +6,15 @@ export const customizeResponse = (template: string, customizations: Record<strin
   return customized.trim()
 }
 
+export const SHOUTOUT_DESCRIPTORS = [
+  `amazing`,
+  `awesome`,
+  `fantastic`,
+  `magnificent`,
+  `phenomenal`,
+  `stupendous`,
+  `talented`,
+  `wonderful`,
+]
+
 export const INTERACTION = `{{displayName}} gave {{interaction}} to {{recipient}} {{emote}}`
