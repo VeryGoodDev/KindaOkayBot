@@ -129,6 +129,9 @@ const simpleDynamicCommands: CommandMap = {
   '!so': {
     description: `Use to put a shoutout in chat for a fellow streamer`,
     getResponse(userState, streamerParam) {
+      if (!streamerParam) {
+        return ``
+      }
       const streamer = streamerParam.replace(/^@/, ``)
       const descriptor = chooseRandom(SHOUTOUT_DESCRIPTORS)
       return `Shout out to the ${descriptor} ${streamer}! Go show them some love at https://twitch.tv/${streamer.toLowerCase()}`
