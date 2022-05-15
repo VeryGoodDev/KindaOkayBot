@@ -24,6 +24,9 @@ export const getUserId = (userState: Userstate): string => {
   if (typeof userState[`user-id`] === `string`) {
     return userState[`user-id`]
   }
+  if (userState.username === `kindaokaybot`) {
+    return `<BOT>`
+  }
   console.warn(`[chatbot/util] Couldn't find a user ID for the following user state:`)
   console.warn(niceJson(userState))
   return `<NO_ID_FOUND>`

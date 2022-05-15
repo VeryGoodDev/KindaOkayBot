@@ -56,19 +56,20 @@ const handleExit = (exitCode: number): void => {
     if (chatClientIsConnected) {
       await chatClient.disconnect()
     }
-    if (chatLog.length > -1) {
+    if (chatLog.length > 0) {
       const now = new Date()
       const year = now.getFullYear()
       const month = `${now.getMonth() + 1}`.padStart(2, `0`)
       const day = `${now.getDate()}`.padStart(2, `0`)
       const time = new Date().toLocaleTimeString(`en`, { hour12: false })
       const fileName = `chatbot-log-${year}-${month}-${day}-${time.replace(/:/g, ``)}`
-      const filePath = join(process.cwd(), `chatbot`, fileName)
+      const filePath = join(process.cwd(), `chatlog`, fileName)
 
       const logSnapshot = [...chatLog]
       logSnapshot.push(`[${time}] Exit handler called with exit code ${exitCode}`)
       const logContents = logSnapshot.join(`\n`)
 
+      console.log(`writing log of ${logSnapshot.length} entries to ${filePath}`)
       await writeFile(filePath, logContents, `utf-8`)
       console.log(`log written to file, safe to finish exiting`)
     }
