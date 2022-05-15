@@ -7,8 +7,8 @@ import type { Command } from './commands'
 import type { Userstate } from 'tmi.js'
 
 interface CommandComponents {
-  command: Command
   commandArgs: string[]
+  commandName: Command
   originalCommand: string
 }
 interface ChatProcessingPeripherals {
@@ -19,8 +19,8 @@ interface ChatProcessingPeripherals {
 
 const parseCommand = (message: string): CommandComponents => {
   const [originalCommand, ...commandArgs] = message.trim().split(/\s+/)
-  const command = originalCommand.toLowerCase() as Command
-  return { command, commandArgs, originalCommand }
+  const commandName = originalCommand.toLowerCase() as Command
+  return { commandArgs, commandName, originalCommand }
 }
 
 export const handleCommand = (
@@ -30,10 +30,11 @@ export const handleCommand = (
   if (!isCommand(message)) {
     return
   }
-  const { command, commandArgs } = parseCommand(message)
+  const { commandName, commandArgs } = parseCommand(message)
 
-  if (command in commandMap) {
-    const response = commandMap[command].getResponse(userState, ...commandArgs)
+  if (commandName in commandMap) {
+    const command = commandMap[commandName]
+    const response = command.getResponse(userState, ...commandArgs)
     clientHelpers.sendInChat(channel, response)
   }
 }

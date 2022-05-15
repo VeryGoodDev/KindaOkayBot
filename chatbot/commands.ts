@@ -5,10 +5,22 @@ import { chooseRandom, getCommaSeparatedList } from './util'
 
 import type { Userstate } from 'tmi.js'
 
+const PermissionLevels = {
+  ALL: `ALL`,
+  MOD: `MOD`,
+  USER_SET: `USER_SET`,
+  VIP: `VIP`,
+} as const
+
+type PermissionGroup = keyof typeof PermissionLevels
+type RestrictedPermissionGroups = Exclude<PermissionGroup, `ALL`>
+type PermissionLevel = PermissionGroup | RestrictedPermissionGroups[]
+
 type Command = `!${string}`
 interface CommandData {
   description: string
   getResponse: (userState: Userstate, ...args: string[]) => string
+  restrictUsage?: PermissionLevel
 }
 type CommandMap = Record<string, CommandData>
 
@@ -193,5 +205,12 @@ const commandMap = {
 }
 
 export default commandMap
-export { staticCommands, simpleDynamicCommands, channelPointRedemptionCommands, quoteCommands, twitchApiCommands }
+export {
+  PermissionLevels,
+  staticCommands,
+  simpleDynamicCommands,
+  channelPointRedemptionCommands,
+  quoteCommands,
+  twitchApiCommands,
+}
 export type { Command, CommandData }
