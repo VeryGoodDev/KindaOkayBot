@@ -26,7 +26,7 @@ const clientHelpers: ClientHelpers = {
 }
 
 for (const [event, handler] of Object.entries(handlers)) {
-  chatClient.on(event as keyof Events, handler(clientHelpers))
+  chatClient.on(event as keyof Events, handler(clientHelpers) as (...args: never) => void)
 }
 
 void chatClient.connect().then(([address, port]) => {
