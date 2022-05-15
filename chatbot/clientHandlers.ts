@@ -92,6 +92,11 @@ const handlers: HandlerMap<Partial<Events>> = {
   chat(clientHelpers) {
     return (channel: string, userState: ChatUserstate, message: string, isSelf: boolean) => {
       clientHelpers.logEvent(`[chat] ${getUserLogString(userState)}: ${message}`)
+      console.log({
+        badgeInfo: userState[`badge-info`],
+        badges: userState.badges,
+        displayName: getDisplayName(userState),
+      })
 
       const messageIsCommand = isCommand(message)
 
