@@ -1,6 +1,6 @@
 /* eslint-disable max-params -- I don't control how many params TMI event handlers can take */
 import { handleCommand, handleModeration, handleSpecialProcessing, handleUserGreet } from './chatHelpers'
-import { getDisplayName, getUsername } from './userHelpers'
+import { getDisplayName, getSubTier, getUserLogString } from './userHelpers'
 import { isCommand, niceJson, pluralize } from './util'
 
 import type {
@@ -9,11 +9,9 @@ import type {
   AnonSubMysteryGiftUserstate,
   ChatUserstate,
   DeleteUserstate,
-  EmoteObj,
   Events,
   MsgID,
   PrimeUpgradeUserstate,
-  RoomState,
   SubGiftUpgradeUserstate,
   SubGiftUserstate,
   SubMethods,
@@ -26,25 +24,18 @@ type HandlerMap<EventMap> = {
   [EventType in keyof EventMap]: (clientHelpers: ClientHelpers) => EventMap[EventType]
 }
 interface ClientHelpers {
+  logEvent: (logEntry: string) => void
   sendInChat: (channel: string, message: string) => void
   whisper: (username: string, message: string) => void
 }
 
 const handlers: HandlerMap<Partial<Events>> = {
-  // TODO
-  action({ sendInChat }) {
-    return (channel: string, userState: Userstate, message: string, isSelf: boolean) => {
-      const args = niceJson({
-        channel,
-        isSelf,
-        message,
-        sendInChat,
-        userState,
-      })
-      console.log(`action event received with args: ${args}`)
+  action({ logEvent }) {
+    return (channel: string, userState: Userstate, message: string) => {
+      logEvent(`[action] ${getUserLogString(userState)}: ${message}`)
     }
   },
-  // TODO
+  // TODO logging, chat message
   anongiftpaidupgrade({ sendInChat }) {
     return (channel: string, username: string, userState: AnonSubGiftUpgradeUserstate) => {
       const args = niceJson({
@@ -56,7 +47,7 @@ const handlers: HandlerMap<Partial<Events>> = {
       console.log(`anongiftpaidupgrade event received with args: ${args}`)
     }
   },
-  // TODO
+  // TODO logging, chat message
   anonsubgift() {
     return (
       channel: string,
@@ -75,7 +66,7 @@ const handlers: HandlerMap<Partial<Events>> = {
       console.log(`anonsubgift event received with args: ${args}`)
     }
   },
-  // TODO
+  // TODO logging, chat message
   anonsubmysterygift() {
     return (channel: string, numSubsGifted: number, subMethods: SubMethods, userState: AnonSubMysteryGiftUserstate) => {
       const args = niceJson({
@@ -88,34 +79,20 @@ const handlers: HandlerMap<Partial<Events>> = {
       console.log(`anonsubmysterygift event received with args: ${args}`)
     }
   },
-  // TODO
-  automod() {
+  automod({ logEvent }) {
     return (channel: string, actionTaken: string, message: string) => {
-      const args = niceJson({
-        actionTaken,
-        channel,
-        message,
-      })
-
-      console.log(`automod event received with args: ${args}`)
+      logEvent(`[automod] action taken: "${actionTaken}" for message "${message}"`)
     }
   },
-  // TODO
-  ban() {
+  ban({ logEvent }) {
     return (channel: string, username: string, reason: string) => {
-      const args = niceJson({
-        channel,
-        reason,
-        username,
-      })
-
-      console.log(`ban event received with args: ${args}`)
+      logEvent(`[ban] ${username} banned for reason: ${reason}`)
     }
   },
-  // TODO
   chat(clientHelpers) {
     return (channel: string, userState: ChatUserstate, message: string, isSelf: boolean) => {
-      // TODO Add logging (datetime, username, message)
+      clientHelpers.logEvent(`[chat] ${getUserLogString(userState)}: ${message}`)
+
       const messageIsCommand = isCommand(message)
 
       // Do nothing for bot messages, unless the bot is running a command
@@ -137,11 +114,10 @@ const handlers: HandlerMap<Partial<Events>> = {
       }
     }
   },
-  // TODO
-  cheer({ sendInChat }) {
-    return (channel: string, userState: ChatUserstate) => {
-      // NOTE can get message: string as third param if needed for anything
+  cheer({ logEvent, sendInChat }) {
+    return (channel: string, userState: ChatUserstate, message: string) => {
       const bitCount = Number(userState.bits)
+      logEvent(`[cheer] ${getUserLogString(userState)} x${bitCount} bits: ${message}`)
       if (bitCount > 0) {
         sendInChat(
           channel,
@@ -153,69 +129,24 @@ const handlers: HandlerMap<Partial<Events>> = {
       }
     }
   },
-  // TODO
-  clearchat() {
+  clearchat({ logEvent }) {
     return (channel: string) => {
-      const args = niceJson({ channel })
-
-      console.log(`clearchat event received with args: ${args}`)
+      logEvent(`[clearchat] ${channel} chat cleared`)
     }
   },
-  // TODO
-  connecting() {
-    return (address: string, port: number) => {
-      const args = niceJson({
-        address,
-        port,
-      })
-
-      console.log(`connecting event received with args: ${args}`)
-    }
-  },
-  // TODO
-  disconnected({ sendInChat }) {
-    return (reason: string) => {
-      const args = niceJson({
-        reason,
-        sendInChat,
-      })
-      console.log(`disconnected event received with args: ${args}`)
-    }
-  },
-  // TODO
-  emoteonly() {
+  emoteonly({ logEvent }) {
     return (channel: string, enabled: boolean) => {
-      const args = niceJson({
-        channel,
-        enabled,
-      })
-
-      console.log(`emoteonly event received with args: ${args}`)
+      const newState = enabled ? `enabled` : `disabled`
+      logEvent(`[emoteonly] ${newState}`)
     }
   },
-  // TODO
-  emotesets() {
-    return (sets: string, emoteObj: EmoteObj) => {
-      const args = niceJson({
-        emoteObj,
-        sets,
-      })
-
-      console.log(`emotesets event received with args: ${args}`)
-    }
-  },
-  // TODO
-  followersonly() {
+  followersonly({ logEvent }) {
     return (channel: string, enabled: boolean, minutesSinceFollow: number) => {
-      const args = niceJson({
-        channel,
-        enabled,
-        minutesSinceFollow,
-      })
-
-      console.log(`followersonly event received with args: ${args}`)
+      const newState = enabled ? `${minutesSinceFollow}-minute follower enabled` : `disabled`
+      logEvent(`[followersonly] ${newState}`)
     }
   },
+  // TODO logging
   giftpaidupgrade({ sendInChat }) {
     return (channel: string, username: string, sender: string, userState: SubGiftUpgradeUserstate) => {
       sendInChat(
@@ -224,119 +155,56 @@ const handlers: HandlerMap<Partial<Events>> = {
       )
     }
   },
-  // TODO
-  hosted() {
+  hosted({ logEvent }) {
     return (channel: string, username: string, viewerCount: number, autohost: boolean) => {
-      const args = niceJson({
-        autohost,
-        channel,
-        username,
-        viewerCount,
-      })
-
-      console.log(`hosted event received with args: ${args}`)
+      const hostType = autohost ? `autohost` : `host`
+      logEvent(`[hosted] ${viewerCount}-viewer ${hostType} from ${username}`)
     }
   },
-  // TODO
-  hosting() {
+  hosting({ logEvent }) {
     return (channel: string, target: string, viewerCount: number) => {
-      const args = niceJson({
-        channel,
-        target,
-        viewerCount,
-      })
-
-      console.log(`hosting event received with args: ${args}`)
+      const viewers = `${viewerCount} ${pluralize(viewerCount, `viewer`)}`
+      logEvent(`[hosting] hosting ${target} with ${viewers}`)
     }
   },
-  // TODO
-  join({ sendInChat }) {
-    return (channel: string, username: string, isSelf: boolean) => {
-      const args = niceJson({
-        channel,
-        isSelf,
-        sendInChat,
-        username,
-      })
-      console.log(`join event received with args: ${args}`)
-    }
-  },
-  // TODO
-  messagedeleted() {
-    return (channel: string, username: string, deletedMessage: string, userState: DeleteUserstate) => {
-      const args = niceJson({
-        channel,
-        deletedMessage,
-        username,
-        userState,
-      })
-
-      console.log(`messagedeleted event received with args: ${args}`)
-    }
-  },
-  // TODO
-  mod() {
+  join({ logEvent }) {
     return (channel: string, username: string) => {
-      const args = niceJson({
-        channel,
-        username,
-      })
-
-      console.log(`mod event received with args: ${args}`)
+      logEvent(`[join] ${username}`)
     }
   },
-  // TODO
-  mods() {
+  messagedeleted({ logEvent }) {
+    return (channel: string, username: string, deletedMessage: string, userState: DeleteUserstate) => {
+      const { login = `<EMPTY>` } = userState
+      logEvent(`[messagedeleted] ${username} (login "${login}"): ${deletedMessage}`)
+    }
+  },
+  mod({ logEvent }) {
+    return (channel: string, username: string) => {
+      logEvent(`[mod] ${username}`)
+    }
+  },
+  mods({ logEvent }) {
     return (channel: string, modList: string[]) => {
-      const args = niceJson({
-        channel,
-        modList,
-      })
-
-      console.log(`mods event received with args: ${args}`)
+      const mods = `${modList.length} ${pluralize(modList.length, `mod`)}`
+      logEvent(`[mods] list of ${mods} retrieved`)
     }
   },
-  // TODO
-  notice() {
+  notice({ logEvent }) {
     return (channel: string, messageId: MsgID, message: string) => {
-      const args = niceJson({
-        channel,
-        message,
-        messageId,
-      })
-
-      console.log(`notice event received with args: ${args}`)
+      logEvent(`[notice] message ID "${messageId}": ${message}`)
     }
   },
-  // TODO
-  part({ sendInChat }) {
-    return (channel: string, username: string, isSelf: boolean) => {
-      const args = niceJson({
-        channel,
-        isSelf,
-        sendInChat,
-        username,
-      })
-      console.log(`part event received with args: ${args}`)
+  part({ logEvent }) {
+    return (channel: string, username: string) => {
+      logEvent(`[part] ${username}`)
     }
   },
-  // TODO
-  ping() {
-    return () => {
-      const args = niceJson({})
-
-      console.log(`ping event received with args: ${args}`)
-    }
-  },
-  // TODO
-  pong() {
+  pong({ logEvent }) {
     return (latency: number) => {
-      const args = niceJson({ latency })
-
-      console.log(`pong event received with args: ${args}`)
+      logEvent(`[pong] ${latency}ms`)
     }
   },
-  // TODO
+  // TODO logging, chat message
   primepaidupgrade() {
     return (channel: string, username: string, subMethods: SubMethods, userState: PrimeUpgradeUserstate) => {
       const args = niceJson({
@@ -349,20 +217,17 @@ const handlers: HandlerMap<Partial<Events>> = {
       console.log(`primepaidupgrade event received with args: ${args}`)
     }
   },
-  // TODO
   // Chat mode that tries to filter repeated messages
-  r9kbeta() {
+  r9kbeta({ logEvent }) {
     return (channel: string, enabled: boolean) => {
-      const args = niceJson({
-        channel,
-        enabled,
-      })
-
-      console.log(`r9kbeta event received with args: ${args}`)
+      const newState = enabled ? `enabled` : `disabled`
+      logEvent(`[r9kbeta] ${newState}`)
     }
   },
-  raided({ sendInChat }) {
+  raided({ logEvent, sendInChat }) {
     return (channel: string, raider: string, raiderCount: number) => {
+      logEvent(`[raided] ${raiderCount}-viewer raid from ${raider}`)
+
       sendInChat(
         channel,
         `${raider} has raided with ${raiderCount} ${pluralize(raiderCount, `raider`)}! Welcome raiders!`
@@ -370,80 +235,49 @@ const handlers: HandlerMap<Partial<Events>> = {
       sendInChat(channel, `!so ${raider}`)
     }
   },
-  // TODO
-  reconnect() {
+  reconnect({ logEvent }) {
     return () => {
-      const args = niceJson({})
-
-      console.log(`reconnect event received with args: ${args}`)
+      logEvent(`[reconnect] client reconnected`)
     }
   },
-  // TODO
-  redeem({ sendInChat }) {
-    return (channel: string, username: string, rewardType: string, tags: ChatUserstate) => {
-      const args = niceJson({
-        channel,
-        rewardType,
-        sendInChat,
-        tags,
-        username,
-      })
-      console.log(`redeem event received with args: ${args}`)
+  redeem({ logEvent }) {
+    return (channel: string, username: string, rewardType: string) => {
+      logEvent(`[redeem] ${username}: ${rewardType}`)
     }
   },
-  resub({ sendInChat }) {
+  resub({ logEvent, sendInChat }) {
     return (
       channel: string,
       username: string,
       months: number,
       message: string,
       userState: SubUserstate,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TEMP
       subMethods: SubMethods
     ) => {
+      const tier = getSubTier(subMethods.plan)
+      logEvent(`[resub] ${username} x${months} (${tier}): ${message}`)
       // TODO call out number of months/streaks
       // TODO call out tier/prime/etc via subMethods info
       // TODO userState has info on cumulative months and whether to share the streak
       sendInChat(
         channel,
-        `${getUsername(userState)} has resubscribed! Thanks for the 
+        `${getDisplayName(userState)} has resubscribed! Thanks for the 
       support!`
       )
     }
   },
-  // TODO
-  // Provides info about chat
-  roomstate() {
-    return (channel: string, roomState: RoomState) => {
-      const args = niceJson({
-        channel,
-        roomState,
-      })
-
-      console.log(`roomstate event received with args: ${args}`)
-    }
-  },
-  // TODO
-  serverchange() {
+  serverchange({ logEvent }) {
     return (channel: string) => {
-      const args = niceJson({ channel })
-
-      console.log(`serverchange event received with args: ${args}`)
+      logEvent(`[serverchange] ${channel}`)
     }
   },
-  // TODO
-  slowmode() {
+  slowmode({ logEvent }) {
     return (channel: string, enabled: boolean, cooldownBetweenMessages: number) => {
-      const args = niceJson({
-        channel,
-        cooldownBetweenMessages,
-        enabled,
-      })
-
-      console.log(`slowmode event received with args: ${args}`)
+      const newState = enabled ? `${cooldownBetweenMessages}-second cooldown enabled` : `disabled`
+      logEvent(`[slowmode] ${newState}`)
     }
   },
-  // TODO
+  // TODO logging, chat message
   subgift({ sendInChat }) {
     return (
       channel: string,
@@ -465,6 +299,7 @@ const handlers: HandlerMap<Partial<Events>> = {
       console.log(`subgift event received with args: ${args}`)
     }
   },
+  // TODO logging
   submysterygift({ sendInChat }) {
     return (
       channel: string,
@@ -482,80 +317,45 @@ const handlers: HandlerMap<Partial<Events>> = {
       )
     }
   },
-  // TODO
-  subscribers() {
+  subscribers({ logEvent }) {
     return (channel: string, enabled: boolean) => {
-      const args = niceJson({
-        channel,
-        enabled,
-      })
-
-      console.log(`subscribers event received with args: ${args}`)
+      const newState = enabled ? `enabled` : `disabled`
+      logEvent(`[subscribers] ${newState}`)
     }
   },
-  subscription({ sendInChat }) {
+  // TODO improve chat message
+  subscription({ logEvent, sendInChat }) {
     return (channel: string, username: string, subMethods: SubMethods, message: string, userState: SubUserstate) => {
+      const tier = getSubTier(subMethods.plan)
+      logEvent(`[subscription] ${username} x1 (${tier}): ${message}`)
       // TODO Acknowledge tier/prime/etc from subMethods
       sendInChat(channel, `${getDisplayName(userState)} has just subscribed! Thanks for the support!`)
     }
   },
-  // TODO
-  timeout() {
+  timeout({ logEvent }) {
     return (channel: string, username: string, reason: string, duration: number) => {
-      const args = niceJson({
-        channel,
-        duration,
-        reason,
-        username,
-      })
-
-      console.log(`timeout event received with args: ${args}`)
+      logEvent(`[timeout] ${username} (${duration}s): ${reason}`)
     }
   },
-  // TODO
-  unhost() {
+  unhost({ logEvent }) {
     return (channel: string, viewerCount: number) => {
-      const args = niceJson({
-        channel,
-        viewerCount,
-      })
-
-      console.log(`unhost event received with args: ${args}`)
+      logEvent(`[unhost] ${viewerCount} ${pluralize(viewerCount, `viewer`)}`)
     }
   },
-  // TODO
-  unmod() {
+  unmod({ logEvent }) {
     return (channel: string, username: string) => {
-      const args = niceJson({
-        channel,
-        username,
-      })
-
-      console.log(`unmod event received with args: ${args}`)
+      logEvent(`[unmod] ${username}`)
     }
   },
-  // TODO
-  vips() {
+  vips({ logEvent }) {
     return (channel: string, vipList: string[]) => {
-      const args = niceJson({
-        channel,
-        vipList,
-      })
-
-      console.log(`vips event received with args: ${args}`)
+      const vips = `${vipList.length} ${pluralize(vipList.length, `VIP`)}`
+      logEvent(`[mods] list of ${vips} retrieved`)
     }
   },
-  // TODO
-  whisper({ sendInChat }) {
-    return (sender: string, userState: ChatUserstate, message: string, isSelf: boolean) => {
-      const args = niceJson({
-        isSelf,
-        message,
-        sender,
-        sendInChat,
-        userState,
-      })
-      console.log(`whisper event received with args: ${args}`)
+  whisper({ logEvent }) {
+    return (sender: string, userState: ChatUserstate, message: string) => {
+      logEvent(`[whisper] from ${sender}: ${message}`)
     }
   },
 }
