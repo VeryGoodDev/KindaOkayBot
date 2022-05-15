@@ -1,9 +1,9 @@
-import commandMap from './commands'
+import commandMap, { PermissionLevels } from './commands'
 import { getUsername } from './userHelpers'
 import { isCommand } from './util'
 
 import type { ClientHelpers } from './clientHandlers'
-import type { Command } from './commands'
+import type { Command, CommandData } from './commands'
 import type { Userstate } from 'tmi.js'
 
 interface CommandComponents {
@@ -23,6 +23,26 @@ const parseCommand = (message: string): CommandComponents => {
   return { commandArgs, commandName, originalCommand }
 }
 
+const userHasPermission = (command: CommandData, userState: Userstate): boolean => {
+  if (command.restrictUsage === undefined || command.restrictUsage === PermissionLevels.ALL) {
+    return true
+  }
+
+  switch (command.restrictUsage) {
+    case PermissionLevels.MOD:
+      return userState.mod === true
+    case PermissionLevels.VIP:
+      // TODO
+      // return userState.badges?.vip === `vip`
+      return false
+    case PermissionLevels.USER_SET:
+      // TODO
+      return false
+    default:
+      return getUsername(userState) === `verygooddev`
+  }
+}
+
 export const handleCommand = (
   message: string,
   { channel, clientHelpers, userState }: ChatProcessingPeripherals
@@ -34,6 +54,9 @@ export const handleCommand = (
 
   if (commandName in commandMap) {
     const command = commandMap[commandName]
+    if (!userHasPermission(command, userState)) {
+      return
+    }
     const response = command.getResponse(userState, ...commandArgs)
     clientHelpers.sendInChat(channel, response)
   }
