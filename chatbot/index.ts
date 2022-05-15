@@ -62,7 +62,7 @@ const handleExit = (exitCode: number): void => {
       const month = `${now.getMonth() + 1}`.padStart(2, `0`)
       const day = `${now.getDate()}`.padStart(2, `0`)
       const time = new Date().toLocaleTimeString(`en`, { hour12: false })
-      const fileName = `chatbot-log-${year}-${month}-${day}-${time.replace(/:/g, ``)}`
+      const fileName = `chatbot-${year}-${month}-${day}-${time.replace(/:/g, ``)}.log`
       const filePath = join(process.cwd(), `chatlog`, fileName)
 
       const logSnapshot = [...chatLog]
