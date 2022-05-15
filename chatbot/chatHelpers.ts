@@ -1,4 +1,4 @@
-import commandMap, { PermissionLevels } from './commands'
+import commandMap, { commandAliases, PermissionLevels, ResponseTypes } from './commands'
 import { getUsername } from './userHelpers'
 import { isCommand } from './util'
 
@@ -19,7 +19,8 @@ interface ChatProcessingPeripherals {
 
 const parseCommand = (message: string): CommandComponents => {
   const [originalCommand, ...commandArgs] = message.trim().split(/\s+/)
-  const commandName = originalCommand.toLowerCase() as Command
+  const commandNameLower = originalCommand.toLowerCase() as Command
+  const commandName = commandNameLower in commandAliases ? commandAliases[commandNameLower] : commandNameLower
   return { commandArgs, commandName, originalCommand }
 }
 
@@ -28,18 +29,19 @@ const userHasPermission = (command: CommandData, userState: Userstate): boolean 
     return true
   }
 
+  const userIsDev = getUsername(userState) === `verygooddev`
+
   switch (command.restrictUsage) {
     case PermissionLevels.MOD:
-      return userState.mod === true
+      return userIsDev || userState.mod === true
     case PermissionLevels.VIP:
       // TODO
-      // return userState.badges?.vip === `vip`
+      // return userIsDev || userState.badges?.vip === `vip`
       return false
     case PermissionLevels.USER_SET:
-      // TODO
-      return false
+      return command.permittedUsers.includes(getUsername(userState))
     default:
-      return getUsername(userState) === `verygooddev`
+      return userIsDev
   }
 }
 
@@ -58,7 +60,11 @@ export const handleCommand = (
       return
     }
     const response = command.getResponse(userState, ...commandArgs)
-    clientHelpers.sendInChat(channel, response)
+    if (command.responseMethod === ResponseTypes.WHISPER) {
+      clientHelpers.whisper(getUsername(userState), response)
+    } else {
+      clientHelpers.sendInChat(channel, response)
+    }
   }
 }
 

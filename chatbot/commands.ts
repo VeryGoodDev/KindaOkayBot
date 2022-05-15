@@ -11,17 +11,31 @@ const PermissionLevels = {
   USER_SET: `USER_SET`,
   VIP: `VIP`,
 } as const
+const ResponseTypes = {
+  CHAT: `CHAT`,
+  WHISPER: `WHISPER`,
+} as const
 
 type PermissionGroup = keyof typeof PermissionLevels
-type RestrictedPermissionGroups = Exclude<PermissionGroup, `ALL` | `USER_SET`>
-type PermissionLevel = PermissionGroup | RestrictedPermissionGroups[]
+type PermissionGroupsByRole = Exclude<PermissionGroup, `ALL` | `USER_SET`>
+type PermissionLevel = PermissionGroup | PermissionGroupsByRole[]
 
 type Command = `!${string}`
-interface CommandData {
+interface CommandDataBase {
   description: string
   getResponse: (userState: Userstate, ...args: string[]) => string
+  responseMethod?: keyof typeof ResponseTypes
   restrictUsage?: PermissionLevel
 }
+interface CommandDataRestrictedByRole extends CommandDataBase {
+  permittedUsers?: never
+  restrictUsage?: Exclude<PermissionLevel, `USER_SET`>
+}
+interface CommandDataRestrictedByUser extends CommandDataBase {
+  permittedUsers: string[]
+  restrictUsage: typeof PermissionLevels.USER_SET
+}
+type CommandData = CommandDataRestrictedByRole | CommandDataRestrictedByUser
 
 type CommandMap = Record<string, CommandData>
 
@@ -149,6 +163,7 @@ const simpleDynamicCommands: CommandMap = {
       const descriptor = chooseRandom(SHOUTOUT_DESCRIPTORS)
       return `Shout out to the ${descriptor} ${streamer}! Go show them some love at https://twitch.tv/${streamer.toLowerCase()}`
     },
+    restrictUsage: `MOD`,
   },
   '!sortalurk': {
     description: `Use to declare your intent to still be in and out of chat, but not quite fully lurking`,
@@ -190,6 +205,8 @@ const channelPointRedemptionCommands: CommandMap = {
     getResponse() {
       return `You have now gone incagbreto, any actions you make may not be private and will be recorded by brevil mod`
     },
+    permittedUsers: [`angelicbre`],
+    restrictUsage: `USER_SET`,
   },
 }
 
@@ -200,18 +217,34 @@ const twitchApiCommands: CommandMap = {}
 const commandMap = {
   ...staticCommands,
   ...simpleDynamicCommands,
-  // ...channelPointRedemptionCommands,
+  ...channelPointRedemptionCommands,
   ...quoteCommands,
   ...twitchApiCommands,
+}
+
+const commandAliases: Record<Command, Command> = {
+  '!calendar': `!schedule`,
+  '!calender': `!schedule`,
+  '!channelpoints': `!bytes`,
+  '!creeperlurk': `!creepylurk`,
+  '!creeplurk': `!creepylurk`,
+  '!points': `!bytes`,
+  '!shoutout': `!so`,
+  '!sleeplurk': `!sleepylurk`,
+  '!stillurking': `!stilllurking`,
+  '!werklurk': `!worklurk`,
+  '!wurklurk': `!worklurk`,
 }
 
 export default commandMap
 export {
   PermissionLevels,
+  ResponseTypes,
   staticCommands,
   simpleDynamicCommands,
   channelPointRedemptionCommands,
   quoteCommands,
   twitchApiCommands,
+  commandAliases,
 }
 export type { Command, CommandData }
