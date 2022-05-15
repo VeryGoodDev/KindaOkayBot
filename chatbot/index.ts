@@ -70,6 +70,7 @@ const handleExit = (exitCode: number): void => {
       const logContents = logSnapshot.join(`\n`)
 
       await writeFile(filePath, logContents, `utf-8`)
+      console.log(`log written to file, safe to finish exiting`)
     }
   }
   if (!hasHandledExit) {
