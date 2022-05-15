@@ -30,7 +30,7 @@ interface ClientHelpers {
   whisper: (username: string, message: string) => void
 }
 
-const handlers: Partial<HandlerMap<Events>> = {
+const handlers: HandlerMap<Partial<Events>> = {
   // TODO
   action({ sendInChat }) {
     return (channel: string, userState: Userstate, message: string, isSelf: boolean) => {
