@@ -13,7 +13,7 @@ const PermissionLevels = {
 } as const
 
 type PermissionGroup = keyof typeof PermissionLevels
-type RestrictedPermissionGroups = Exclude<PermissionGroup, `ALL`>
+type RestrictedPermissionGroups = Exclude<PermissionGroup, `ALL` | `USER_SET`>
 type PermissionLevel = PermissionGroup | RestrictedPermissionGroups[]
 
 type Command = `!${string}`
@@ -22,13 +22,14 @@ interface CommandData {
   getResponse: (userState: Userstate, ...args: string[]) => string
   restrictUsage?: PermissionLevel
 }
+
 type CommandMap = Record<string, CommandData>
 
 const staticCommands: CommandMap = {
   '!bot': {
     description: `Provides a little info about KindaOkayBot`,
     getResponse() {
-      return `Dev decided to write his own bot. Still a work in progress. Bugs happening during stream always a distinct possibility. Written in TypeScript for NodeJS`
+      return `Dev decided to write his own bot. Still a work in progress. Bugs happening during stream always a distinct possibility. Written in TypeScript, running on NodeJS`
     },
   },
   '!bytes': {
