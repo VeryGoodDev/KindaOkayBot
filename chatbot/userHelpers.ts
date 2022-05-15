@@ -4,7 +4,7 @@ import type { Userstate } from 'tmi.js'
 
 export const getUsername = (userState: Userstate): string => {
   if (typeof userState.username === `string`) {
-    return userState.username
+    return userState.username.toLowerCase()
   }
   console.warn(`[chatbot/util] Couldn't find a username for the following user state:`)
   console.warn(niceJson(userState))
