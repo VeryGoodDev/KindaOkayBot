@@ -172,6 +172,24 @@ const lurkCommands: CommandMap = {
     },
   },
 }
+const skipLurkKeys = [`!stilllurking`, `!unlurk`]
+const lurkKeys = Object.keys(lurkCommands).filter((key) => !skipLurkKeys.includes(key))
+lurkCommands[`!randomLurk`] = {
+  description: `Use to let KindaOkayBot decide which lurk command you should use`,
+  getResponse() {
+    const suggestionText = chooseRandom([
+      `Why not try the {{chosenLurk}} command?`,
+      `I wholeheartedly recommend the {{chosenLurk}} command`,
+      `In my opinion the {{chosenLurk}} command is a fine choice`,
+      `Definitely the {{chosenLurk}} command, it's one of my favorites`,
+      `Based on my extremely precise mathematical calculations, the best option for you at this time is the {{chosenLurk}} command`,
+      `You want the {{chosenLurk}} command. This is the way.`,
+      `BOT_ERROR 69420 --- UNABLE TO READ SUBJECT'S MIND TO DETERMINE WHICH LURK COMMAND TO USE. PLEASE REMOVE ANY MIND-READER-BLOCKING APPARATUS OR DEVICES AND TRY AGAIN. BEEP BOOP`,
+    ])
+    const chosenLurk = chooseRandom(lurkKeys)
+    return customizeResponse(suggestionText, { chosenLurk })
+  },
+}
 
 const simpleDynamicCommands: CommandMap = {
   '!grouphug': {
