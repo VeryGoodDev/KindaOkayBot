@@ -219,7 +219,7 @@ const simpleDynamicCommands: CommandMap = {
   },
 }
 
-const channelPointRedemptionCommands: CommandMap = {
+const channelPointRedemptionCommands: Record<Command, CommandDataRestrictedByUser> = {
   '!incagbreto': {
     description: ``,
     getResponse() {
