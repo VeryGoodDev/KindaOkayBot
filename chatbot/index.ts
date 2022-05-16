@@ -5,6 +5,7 @@ import { config } from 'dotenv'
 import { client as TmiClient } from 'tmi.js'
 
 import handlers from './clientHandlers.js'
+import { pluralize } from './util.js'
 
 import type { ClientHelpers } from './clientHandlers.js'
 import type { Events } from 'tmi.js'
@@ -19,9 +20,16 @@ const chatClient = new TmiClient({
   },
 })
 
+const accumulatedEvents: Partial<Record<keyof Events, number[]>> = {}
 const chatLog: string[] = []
 
 const clientHelpers: ClientHelpers = {
+  addEvent(eventName: keyof Events, value: number) {
+    if (!accumulatedEvents[eventName]) {
+      accumulatedEvents[eventName] = []
+    }
+    accumulatedEvents[eventName]?.push(value)
+  },
   logEvent(logEntry: string) {
     const time = new Date().toLocaleTimeString(`en`, { hour12: false })
     const entry = `[${time}] ${logEntry}`
@@ -65,11 +73,18 @@ const handleExit = (exitCode: number): void => {
       const fileName = `chatbot-${year}-${month}-${day}-${time.replace(/:/g, ``)}.log`
       const filePath = join(process.cwd(), `chatlog`, fileName)
 
-      const logSnapshot = [...chatLog]
-      logSnapshot.push(`[${time}] Exit handler called with exit code ${exitCode}`)
-      const logContents = logSnapshot.join(`\n`)
+      const logClone = [...chatLog]
 
-      console.log(`writing log of ${logSnapshot.length} entries to ${filePath}`)
+      const pongCount = accumulatedEvents.pong?.length ?? 0
+      const pongTimes = `${pongCount} ${pluralize(pongCount, `time`)}`
+      const latencySum = accumulatedEvents.pong?.reduce((sum, latency) => sum + latency, 0) ?? 0
+      const avgLatency = pongCount === 0 ? `0/0` : latencySum / pongCount
+      logClone.push(`[${time}] pong event occurred ${pongTimes} with an average latency of ${avgLatency}ms`)
+      logClone.push(`[${time}] Exit handler called with exit code ${exitCode}`)
+
+      const logContents = logClone.join(`\n`)
+
+      console.log(`writing log of ${logClone.length} entries to ${filePath}`)
       await writeFile(filePath, logContents, `utf-8`)
       console.log(`log written to file, safe to finish exiting`)
     }

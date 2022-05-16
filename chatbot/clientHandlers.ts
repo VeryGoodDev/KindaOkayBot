@@ -24,6 +24,7 @@ type HandlerMap<EventMap> = {
   [EventType in keyof EventMap]: (clientHelpers: ClientHelpers) => EventMap[EventType]
 }
 interface ClientHelpers {
+  addEvent: (eventName: keyof Events, value: number) => void
   logEvent: (logEntry: string) => void
   sendInChat: (channel: string, message: string) => void
   whisper: (username: string, message: string) => void
@@ -204,9 +205,9 @@ const handlers: HandlerMap<Partial<Events>> = {
       logEvent(`[part] ${username}`)
     }
   },
-  pong({ logEvent }) {
+  pong({ addEvent }) {
     return (latency: number) => {
-      logEvent(`[pong] ${latency}ms`)
+      addEvent(`pong`, latency)
     }
   },
   // TODO logging, chat message
