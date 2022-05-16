@@ -37,7 +37,7 @@ interface CommandDataRestrictedByUser extends CommandDataBase {
 }
 type CommandData = CommandDataRestrictedByRole | CommandDataRestrictedByUser
 
-type CommandMap = Record<string, CommandData>
+type CommandMap = Record<Command, CommandData>
 
 const staticCommands: CommandMap = {
   '!bot': {
