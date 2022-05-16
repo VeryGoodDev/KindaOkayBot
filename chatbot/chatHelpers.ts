@@ -35,9 +35,7 @@ const userHasPermission = (command: CommandData, userState: Userstate): boolean 
     case PermissionLevels.MOD:
       return userIsDev || userState.mod === true
     case PermissionLevels.VIP:
-      // TODO
-      // return userIsDev || userState.badges?.vip === `vip`
-      return false
+      return userIsDev || userState.badges?.vip === `1`
     case PermissionLevels.USER_SET:
       return command.permittedUsers.includes(getUsername(userState))
     default:
