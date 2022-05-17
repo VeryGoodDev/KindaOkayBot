@@ -14,5 +14,12 @@ module.exports = {
         'import/no-commonjs': `off`,
       },
     },
+    {
+      files: [`./src/**/*.tsx`],
+      extends: require.resolve(`@vgd/eslint-config-personal/preact-ts`),
+      parserOptions: {
+        project: `./tsconfig.json`,
+      },
+    },
   ],
 }

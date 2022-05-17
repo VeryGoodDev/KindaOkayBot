@@ -13,6 +13,7 @@
 
 # development
 /dist
+/site/*.js.map
 .cache
 
 # misc
