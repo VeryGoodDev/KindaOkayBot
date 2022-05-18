@@ -1,14 +1,24 @@
 const { spawn } = require(`node:child_process`)
 const { getPreactBuildRunner } = require(`@vgd/esbuild-util`)
+const { readdir, rm: deleteFile } = require(`node:fs/promises`)
+const { join } = require(`node:path`)
 
 const commonOverrides = {
   outdir: `site`,
+  splitting: true,
+}
+
+const SITE_DIR = join(process.cwd(), `site`)
+const clearSiteDir = async () => {
+  const siteFiles = await readdir(SITE_DIR)
+  await Promise.all(siteFiles.map((file) => deleteFile(join(SITE_DIR, file))))
 }
 
 const build = async () => {
-  const buildRunner = await getPreactBuildRunner()
+  await clearSiteDir()
+  const runBuild = await getPreactBuildRunner()
   const start = performance.now()
-  void buildRunner({
+  void runBuild({
     ...commonOverrides,
     minify: true,
   }).then(() => {
@@ -20,9 +30,10 @@ const build = async () => {
 }
 
 const dev = async () => {
-  const buildRunner = await getPreactBuildRunner()
+  await clearSiteDir()
+  const runBuild = await getPreactBuildRunner()
   const start = performance.now()
-  void buildRunner({
+  void runBuild({
     ...commonOverrides,
     sourcemap: true,
     watch: {

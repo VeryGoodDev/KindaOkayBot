@@ -2,8 +2,8 @@ import { Route, Router } from 'preact-router'
 import { Suspense, lazy } from 'preact/compat'
 
 import ErrorPage from './ErrorPage'
-import HomePage from './HomePage'
 
+const HomePage = lazy(() => import(`./HomePage`))
 const CommandsPage = lazy(() => import(`./CommandsPage`))
 
 const Paths = (() => {
@@ -24,8 +24,10 @@ const App = () => (
     </nav>
     <main>
       <Router>
-        <HomePage path={Paths.HOME} />
-        <Suspense fallback="Loading command info" path={Paths.COMMANDS}>
+        <Suspense fallback="Loading..." path={Paths.HOME}>
+          <HomePage />
+        </Suspense>
+        <Suspense fallback="Loading commands..." path={Paths.COMMANDS}>
           <CommandsPage />
         </Suspense>
         <Route component={ErrorPage} default={true} />
