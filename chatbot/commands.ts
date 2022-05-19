@@ -290,4 +290,4 @@ export {
   channelPointRedemptionCommands,
   commandAliases,
 }
-export type { Command, CommandData }
+export type { Command, CommandData, CommandMap }
