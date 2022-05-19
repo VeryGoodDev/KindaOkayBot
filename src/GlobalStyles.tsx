@@ -15,6 +15,7 @@ const GlobalStyles = () => {
         background-color: hsl(180, 10%, 10%);
         color: hsl(180, 93%, 95%);
         font-family: Montserrat, sans-serif;
+        font-size: 16px;
         margin: 0;
         padding: 0;
       }
