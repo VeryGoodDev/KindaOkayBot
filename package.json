@@ -28,11 +28,13 @@
     "eslint-config-personal": "github:veryGoodDev/eslint-config-personal"
   },
   "dependencies": {
+    "@emotion/css": "^11.9.0",
     "preact": "^10.7.2",
     "preact-router": "^4.0.1",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.12",
     "@types/node": "^17.0.31",
     "@types/tmi.js": "^1.8.1",
     "@vgd/esbuild-util": "^0.3.1",

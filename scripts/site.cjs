@@ -1,9 +1,13 @@
 const { spawn } = require(`node:child_process`)
-const { getPreactBuildRunner } = require(`@vgd/esbuild-util`)
 const { readdir, rm: deleteFile } = require(`node:fs/promises`)
 const { join } = require(`node:path`)
 
+const { getPreactBuildRunner } = require(`@vgd/esbuild-util`)
+
 const commonOverrides = {
+  loader: {
+    '.png': `dataurl`,
+  },
   outdir: `site`,
   splitting: true,
 }

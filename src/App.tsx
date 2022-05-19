@@ -2,6 +2,8 @@ import { Route, Router } from 'preact-router'
 import { Suspense, lazy } from 'preact/compat'
 
 import ErrorPage from './ErrorPage'
+import GlobalStyles from './GlobalStyles'
+import SiteHeader from './SiteHeader'
 
 const HomePage = lazy(() => import(`./HomePage`))
 const CommandsPage = lazy(() => import(`./CommandsPage`))
@@ -17,11 +19,8 @@ const Paths = (() => {
 
 const App = () => (
   <>
-    <nav style={{ marginBlockEnd: 12 }}>
-      <a href={Paths.HOME}>Home</a>
-      <span style={{ display: `inline-block`, width: 12 }} />
-      <a href={Paths.COMMANDS}>Commands</a>
-    </nav>
+    <GlobalStyles />
+    <SiteHeader />
     <main>
       <Router>
         <Suspense fallback="Loading..." path={Paths.HOME}>
