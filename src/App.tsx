@@ -12,6 +12,7 @@ const Paths = (() => {
   const isLocal = window.location.hostname === `localhost`
   const root = isLocal ? `/` : `/kindaokaybot`
   return {
+    BOT_IMAGE: `./src/img/kindaokaybot.png`,
     COMMANDS: `${root}/commands`.replace(`//`, `/`),
     HOME: root,
   } as const

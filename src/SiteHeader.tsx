@@ -59,7 +59,7 @@ const navCss = css`
 const SiteHeader = () => (
   <header class={headerCss}>
     <a class={logoLinkCss} href={Paths.HOME}>
-      <img alt="Bot" src="../src/img/kindaokaybot.png" />
+      <img alt="Bot" src={Paths.BOT_IMAGE} />
     </a>
     <nav class={navCss}>
       <a href={Paths.COMMANDS}>Commands</a>
