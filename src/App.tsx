@@ -1,12 +1,12 @@
 import { Route, Router } from 'preact-router'
 import { Suspense, lazy } from 'preact/compat'
 
-import ErrorPage from './ErrorPage'
 import GlobalStyles from './GlobalStyles'
-import HomePage from './HomePage'
+import ErrorPage from './pages/ErrorPage'
+import HomePage from './pages/HomePage'
 import SiteHeader from './SiteHeader'
 
-const CommandsPage = lazy(() => import(`./CommandsPage`))
+const CommandsPage = lazy(() => import(`./pages/CommandsPage`))
 
 const Paths = (() => {
   const isLocal = window.location.hostname === `localhost`

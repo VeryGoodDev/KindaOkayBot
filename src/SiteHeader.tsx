@@ -48,6 +48,8 @@ const logoLinkCss = css`
 `
 
 const navCss = css`
+  display: grid;
+
   a {
     align-items: center;
     color: inherit;
