@@ -24,9 +24,6 @@ const GlobalStyles = () => {
         grid-template-rows: auto 1fr auto;
         min-height: 100vh;
       }
-      main {
-        padding: 16px;
-      }
     `
   }, [])
   return null
