@@ -49,6 +49,7 @@ const logoLinkCss = css`
 
 const navCss = css`
   display: grid;
+  justify-content: start;
 
   a {
     align-items: center;
