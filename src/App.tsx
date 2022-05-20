@@ -3,9 +3,9 @@ import { Suspense, lazy } from 'preact/compat'
 
 import ErrorPage from './ErrorPage'
 import GlobalStyles from './GlobalStyles'
+import HomePage from './HomePage'
 import SiteHeader from './SiteHeader'
 
-const HomePage = lazy(() => import(`./HomePage`))
 const CommandsPage = lazy(() => import(`./CommandsPage`))
 
 const Paths = (() => {
@@ -24,9 +24,7 @@ const App = () => (
     <SiteHeader />
     <main>
       <Router>
-        <Suspense fallback="Loading..." path={Paths.HOME}>
-          <HomePage />
-        </Suspense>
+        <Route component={HomePage} path={Paths.HOME} />
         <Suspense fallback="Loading commands..." path={Paths.COMMANDS}>
           <CommandsPage />
         </Suspense>
