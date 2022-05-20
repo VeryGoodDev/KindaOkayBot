@@ -1,4 +1,5 @@
 import { css } from '@emotion/css'
+import { useEffect, useState } from 'preact/hooks'
 
 import {
   staticCommands,
@@ -47,16 +48,68 @@ const commandList = entries.reduce<CommandTableEntry[]>((list, [command, { descr
   return [...list, entry]
 }, [])
 
-const placeholderCss = css`
-  display: grid;
-  font-size: 1.25rem;
-  padding-block-start: 16px;
-  place-items: center;
+const tableCss = css`
+  border-collapse: collapse;
+  margin: auto;
+  max-width: 1000px;
+  width: 100%;
+
+  th,
+  td {
+    padding: 0.5em 0.75em;
+    text-align: left;
+  }
+
+  thead {
+    /* TODO bg color */
+  }
+
+  tbody tr {
+    &:nth-child(odd) {
+      /* TODO */
+    }
+
+    &:nth-child(even) {
+      /* TODO */
+    }
+  }
 `
 
+const sortCommandList = (list: CommandTableEntry[]): CommandTableEntry[] =>
+  [...list].sort(({ command: commandA }, { command: commandB }) => {
+    if (commandA < commandB) {
+      return -1
+    }
+    if (commandA > commandB) {
+      return 1
+    }
+    return 0
+  })
+
 const CommandsPage = () => {
-  console.log(commandList)
-  return <div class={placeholderCss}>Command list coming soon</div>
+  // TODO sort controls
+  const [sortedList, setSortedList] = useState(commandList)
+
+  useEffect(() => {
+    setSortedList((prevList) => sortCommandList(prevList))
+  }, [])
+
+  return (
+    <table class={tableCss}>
+      <thead>
+        <th>Command</th>
+        <th>Info</th>
+      </thead>
+      <tbody>
+        {sortedList.map((row) => (
+          <tr key={row.command}>
+            <td>{row.command}</td>
+            <td>{row.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
 }
 
 export default CommandsPage
