@@ -53,7 +53,7 @@ const staticCommands: CommandMap = {
     },
   },
   '!commands': {
-    description: `Provides a link to a webpage that lists all commands supported by KindaOkayBot`,
+    description: `Provides a link to this page`,
     getResponse() {
       return `Coming soon (feel free to ask Dev if you're looking for anything specific)`
     },
