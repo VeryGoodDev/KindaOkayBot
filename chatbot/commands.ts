@@ -19,6 +19,7 @@ const ResponseTypes = {
 type PermissionGroup = keyof typeof PermissionLevels
 type PermissionGroupsByRole = Exclude<PermissionGroup, `ALL` | `USER_SET`>
 type PermissionLevel = PermissionGroup | PermissionGroupsByRole[]
+type PublicPermissionLevels = Exclude<PermissionGroup, `USER_SET`>
 
 type Command = `!${string}`
 interface CommandDataBase {
@@ -290,4 +291,4 @@ export {
   channelPointRedemptionCommands,
   commandAliases,
 }
-export type { Command, CommandData, CommandMap }
+export type { Command, CommandData, CommandMap, PublicPermissionLevels }
