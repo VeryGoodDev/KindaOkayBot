@@ -17,7 +17,7 @@ const headerCss = css`
     var(--bg-angle),
     hsl(180, 0%, 0%) 0%,
     hsl(180, 0%, 0%) var(--bg-stripe-start),
-    hsl(180, 93%, 20%) var(--bg-stripe-start)
+    hsl(180, 93%, 15%) var(--bg-stripe-start)
   );
   column-gap: 24px;
   display: grid;
@@ -31,7 +31,7 @@ const logoLinkCss = css`
 
   background-color: hsl(180, 93%, 85%);
   border-radius: 50%;
-  border: var(--border-width) solid hsl(180, 93%, 20%);
+  border: var(--border-width) solid hsl(180, 93%, 15%);
   height: calc(var(--img-height) + (var(--border-width) * 2));
 
   img {
