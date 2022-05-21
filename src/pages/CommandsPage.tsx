@@ -74,6 +74,8 @@ const tableCss = css`
 
   thead {
     background-color: hsl(180, 5%, 2.5%);
+    font-family: Righteous;
+    font-size: larger;
     position: sticky;
     top: 0;
   }
