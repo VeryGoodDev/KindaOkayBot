@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'preact/compat'
 import GlobalStyles from './GlobalStyles'
 import ErrorPage from './pages/ErrorPage'
 import HomePage from './pages/HomePage'
+import SiteFooter from './SiteFooter'
 import SiteHeader from './SiteHeader'
 
 const CommandsPage = lazy(() => import(`./pages/CommandsPage`))
@@ -31,6 +32,7 @@ const App = () => (
         <Route component={ErrorPage} default={true} />
       </Router>
     </main>
+    <SiteFooter />
   </>
 )
 
