@@ -56,7 +56,7 @@ const staticCommands: CommandMap = {
   '!commands': {
     description: `Provides a link to this page`,
     getResponse() {
-      return `Coming soon (feel free to ask Dev if you're looking for anything specific)`
+      return `https://verygooddev.github.io/kindaokaybot/commands`
     },
   },
   '!discord': {
