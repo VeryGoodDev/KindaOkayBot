@@ -36,6 +36,8 @@ import{a,c as n,k as C,l as R,m as I,o as l,p as P,q as E}from"./chunk-SHVHH5ET.
 
   thead {
     background-color: hsl(180, 5%, 2.5%);
+    font-family: Righteous;
+    font-size: larger;
     position: sticky;
     top: 0;
   }
@@ -51,7 +53,7 @@ import{a,c as n,k as C,l as R,m as I,o as l,p as P,q as E}from"./chunk-SHVHH5ET.
       --row-lightness: 15%;
     }
   }
-`,W=e=>[...e].sort(({command:t},{command:o})=>t<o?-1:t>o?1:0),z=l`
+`,z=e=>[...e].sort(({command:t},{command:o})=>t<o?-1:t>o?1:0),W=l`
   display: grid;
   row-gap: 8px;
 
@@ -66,4 +68,4 @@ import{a,c as n,k as C,l as R,m as I,o as l,p as P,q as E}from"./chunk-SHVHH5ET.
   display: grid;
   grid-auto-flow: column;
   justify-content: start;
-`,J=({commandData:e})=>{let t=e.aliases.length>0?n("div",null,n("i",null,"Aliases:")," ",n("code",null,e.aliases.join(", "))):null;return n("div",{class:z},n("div",{class:K},e.allowedUsers.map(o=>n(D,{key:o,group:o}))),n("div",{dangerouslySetInnerHTML:{__html:e.description.replace(/`(?<command>.+?)`/g,"<code>$<command></code>")}}),t)},q=()=>{let[e,t]=C(V);return R(()=>{t(o=>W(o))},[]),n("table",{class:Y},n("thead",null,n("th",null,"Command"),n("th",null,"Info")),n("tbody",null,e.map(o=>n("tr",{key:o.command},n("td",null,o.command),n("td",null,n(J,{commandData:o}))))))},pe=q;export{pe as default};
+`,J=({commandData:e})=>{let t=e.aliases.length>0?n("div",null,n("i",null,"Aliases:")," ",n("code",null,e.aliases.join(", "))):null;return n("div",{class:W},n("div",{class:K},e.allowedUsers.map(o=>n(D,{key:o,group:o}))),n("div",{dangerouslySetInnerHTML:{__html:e.description.replace(/`(?<command>.+?)`/g,"<code>$<command></code>")}}),t)},q=()=>{let[e,t]=C(V);return R(()=>{t(o=>z(o))},[]),n("table",{class:Y},n("thead",null,n("th",null,"Command"),n("th",null,"Info")),n("tbody",null,e.map(o=>n("tr",{key:o.command},n("td",null,o.command),n("td",null,n(J,{commandData:o}))))))},pe=q;export{pe as default};

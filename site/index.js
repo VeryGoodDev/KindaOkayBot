@@ -95,7 +95,7 @@ import{a as l,b as f,c as n,d as p,e as g,f as y,g as M,h as L,i as O,j as w,l a
     var(--bg-angle),
     hsl(180, 0%, 0%) 0%,
     hsl(180, 0%, 0%) var(--bg-stripe-start),
-    hsl(180, 93%, 20%) var(--bg-stripe-start)
+    hsl(180, 93%, 15%) var(--bg-stripe-start)
   );
   column-gap: 24px;
   display: grid;
@@ -107,7 +107,7 @@ import{a as l,b as f,c as n,d as p,e as g,f as y,g as M,h as L,i as O,j as w,l a
 
   background-color: hsl(180, 93%, 85%);
   border-radius: 50%;
-  border: var(--border-width) solid hsl(180, 93%, 20%);
+  border: var(--border-width) solid hsl(180, 93%, 15%);
   height: calc(var(--img-height) + (var(--border-width) * 2));
 
   img {
@@ -146,4 +146,4 @@ import{a as l,b as f,c as n,d as p,e as g,f as y,g as M,h as L,i as O,j as w,l a
       color: hsl(180, 93%, 50%);
     }
   }
-`,je=()=>n("header",{class:ze},n("a",{class:Be,href:k.HOME},n("img",{alt:"Bot",src:k.BOT_IMAGE})),n("nav",{class:Fe},n("a",{href:k.COMMANDS},n(z,{color:"currentColor",size:24}),n("span",null,"Commands")))),se=je;var Ve=oe(()=>import("./CommandsPage-3MWNAZOM.js")),k=(()=>{let t=window.location.hostname==="localhost"?"/":"/kindaokaybot";return{BOT_IMAGE:"./src/img/kindaokaybot.png",COMMANDS:`${t}/commands`.replace("//","/"),HOME:t}})(),Ge=()=>n(p,null,n(re,null),n(se,null),n("main",null,n($,null,n(T,{component:ie,path:k.HOME}),n(E,{fallback:"Loading commands...",path:k.COMMANDS},n(Ve,null)),n(T,{component:ne,default:!0}))),n(ae,null)),ue=Ge;M(n(ue,null),document.querySelector("#app"));
+`,je=()=>n("header",{class:ze},n("a",{class:Be,href:k.HOME},n("img",{alt:"Bot",src:k.BOT_IMAGE})),n("nav",{class:Fe},n("a",{href:k.COMMANDS},n(z,{color:"currentColor",size:24}),n("span",null,"Commands")))),se=je;var Ve=oe(()=>import("./CommandsPage-S2DNNW5W.js")),k=(()=>{let t=window.location.hostname==="localhost"?"/":"/kindaokaybot";return{BOT_IMAGE:"./src/img/kindaokaybot.png",COMMANDS:`${t}/commands`.replace("//","/"),HOME:t}})(),Ge=()=>n(p,null,n(re,null),n(se,null),n("main",null,n($,null,n(T,{component:ie,path:k.HOME}),n(E,{fallback:"Loading commands...",path:k.COMMANDS},n(Ve,null)),n(T,{component:ne,default:!0}))),n(ae,null)),ue=Ge;M(n(ue,null),document.querySelector("#app"));
