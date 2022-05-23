@@ -175,7 +175,7 @@ const lurkCommands: CommandMap = {
 }
 const skipLurkKeys = [`!stilllurking`, `!unlurk`]
 const lurkKeys = Object.keys(lurkCommands).filter((key) => !skipLurkKeys.includes(key))
-lurkCommands[`!randomLurk`] = {
+lurkCommands[`!randomlurk`] = {
   description: `Use to let KindaOkayBot decide which lurk command you should use`,
   getResponse() {
     const suggestionText = chooseRandom([
